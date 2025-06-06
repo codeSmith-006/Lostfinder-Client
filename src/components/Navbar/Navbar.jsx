@@ -1,10 +1,13 @@
-import React from "react";
+import React, { use } from "react";
 import logo from "../../assets/LostFinder logo.png";
 import { NavLink } from "react-router-dom";
 import * as motion from "motion/react-client";
 import AnimatedLink from "./AnimatedLinks/AnimatedLink";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const {test} = use(AuthContext)
+  console.log(test)
   return (
     <div className="">
       <div className="navbar bg-transparent flex justify-between absolute z-50 px-5 py-5 md:py-7">

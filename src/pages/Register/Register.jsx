@@ -10,10 +10,10 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const formData = new dataFrom
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const photoURL = form.photoURL.value.trim();
+    const formData = new FormData(form);
+    const objectData = Object.fromEntries(formData.entries());
+    console.log(objectData);
+
     const password = form.password.value.trim();
 
     // Password validation
@@ -29,8 +29,7 @@ export default function Register() {
     }
 
     setPasswordError("");
-    console.log({ name, email, photoURL, password });
-    // Continue registration logic...
+
   };
 
   return (
