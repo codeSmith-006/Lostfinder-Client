@@ -3,24 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
-import { useEffect, useState } from "react";
 
 export default function Login() {
-  const [text, setText] = useState({});
-  const texts = [
-    {
-      heading: "🔍 Lost an Item?",
-      text: "Report it and let others help you find it.",
-    },
-    {
-      heading: " 👜 Found Something?",
-      text: "List it here — someone might be looking for it.",
-    },
-    {
-      heading: " ♻️ Easy Recovery",
-      text: "We connect finders and owners safely and quickly.",
-    },
-  ];
   return (
     <GradientAnimate>
       {/* Overlay */}

@@ -10,6 +10,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
+    const formData = new dataFrom
     const name = form.name.value.trim();
     const email = form.email.value.trim();
     const photoURL = form.photoURL.value.trim();
