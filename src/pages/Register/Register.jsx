@@ -1,20 +1,23 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Register() {
   const [passwordError, setPasswordError] = useState("");
+  const {createAccount} = use(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const objectData = Object.fromEntries(formData.entries());
-    console.log(objectData);
 
+    const email = form.email.value;
     const password = form.password.value.trim();
+    console.log(email , password)
 
     // Password validation
     const hasUppercase = /[A-Z]/.test(password);
@@ -29,6 +32,13 @@ export default function Register() {
     }
 
     setPasswordError("");
+
+    // account creation
+    createAccount(email, password)
+    .then(userCredential => {
+      console.log(userCredential)
+    })
+    .catch(error => console.log("Error: ", error))
 
   };
 

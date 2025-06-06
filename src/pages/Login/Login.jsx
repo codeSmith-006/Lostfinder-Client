@@ -3,8 +3,26 @@ import { FcGoogle } from "react-icons/fc";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
+import { use } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
+  const {accountLogin} = use(AuthContext)
+
+  // handling submit login button
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    // email 
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    accountLogin(email, password)
+    .then(userCredential => {
+      console.log(userCredential.user)
+    })
+    .catch(error => console.log("Error: ", error))
+  }
   return (
     <GradientAnimate>
       {/* Overlay */}
@@ -58,7 +76,7 @@ export default function Login() {
               </motion.div>
             </p>
 
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="sr-only">
                   Email
