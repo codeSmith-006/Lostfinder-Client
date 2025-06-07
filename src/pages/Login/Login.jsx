@@ -3,25 +3,35 @@ import { FcGoogle } from "react-icons/fc";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
-import { use } from "react";
+import { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { showToast } from "../../components/Toast/Toast";
 
 export default function Login() {
-  const {accountLogin} = use(AuthContext)
+  const {accountLogin} = use(AuthContext);
+  const [error, setError] = useState('');
 
   // handling submit login button
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
     // email 
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    accountLogin(email, password)
-    .then(userCredential => {
-      console.log(userCredential.user)
-    })
-    .catch(error => console.log("Error: ", error))
+
+    // user login
+    try {
+      const userCredential = await accountLogin(email, password);
+      if (userCredential?.user) {
+        showToast("success", "Signed in successfully")
+      }
+    } catch(err) {
+      setError(err);
+      console.log(error)
+      showToast("error", `${error}`)
+    }
+
   }
   return (
     <GradientAnimate>

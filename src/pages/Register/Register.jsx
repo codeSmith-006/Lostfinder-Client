@@ -4,12 +4,17 @@ import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import { AuthContext } from "../../context/AuthContext";
+import { showToast } from "../../components/Toast/Toast";
 
 export default function Register() {
   const [passwordError, setPasswordError] = useState("");
   const {createAccount} = use(AuthContext);
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+
+
+  // handle register button submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
@@ -33,12 +38,17 @@ export default function Register() {
 
     setPasswordError("");
 
-    // account creation
-    createAccount(email, password)
-    .then(userCredential => {
-      console.log(userCredential)
-    })
-    .catch(error => console.log("Error: ", error))
+
+    // create user
+    try {
+      const userCredential = await createAccount(email, password);
+      if(userCredential?.user) {
+        showToast("success", "Account created successfully!")
+      }
+    } catch(err) {
+      setError(err);
+      showToast('error', `${error}`)
+    }
 
   };
 
