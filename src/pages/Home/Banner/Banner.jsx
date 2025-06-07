@@ -59,7 +59,7 @@ const SlideHero = ({ slide }) => (
 
     {/* Content */}
     <motion.div
-      className="absolute bottom-36 md:bottom-32 left-6 sm:left-16 max-w-xl text-white"
+      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl text-white"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
