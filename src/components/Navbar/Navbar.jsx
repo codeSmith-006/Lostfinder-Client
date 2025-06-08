@@ -1,13 +1,26 @@
 import React, { use } from "react";
 import logo from "../../assets/LostFinder logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigation } from "react-router-dom";
 import * as motion from "motion/react-client";
 import AnimatedLink from "./AnimatedLinks/AnimatedLink";
 import { AuthContext } from "../../context/AuthContext";
+import { showToast } from "../Toast/Toast";
 
 const Navbar = () => {
-  const { currentUser, loading } = use(AuthContext);
+  const { currentUser, loading, logout } = use(AuthContext);
   console.log(currentUser);
+
+  const navigate = useNavigation();
+
+  // handle logout button
+  const handleLogout = () => {
+    logout()
+    .then(() => {
+      showToast('success', 'Signout successfully');
+      navigate('/');
+    })
+    .catch(error => console.log(error))
+  };
   return (
     <div className="">
       <div className="navbar bg-transparent flex justify-between absolute z-50 px-5 py-5 md:py-7">
@@ -34,6 +47,7 @@ const Navbar = () => {
           ) : currentUser ? (
             <div className="flex items-center gap-2">
               <motion.button
+                onClick={handleLogout}
                 whileHover={{
                   scale: 1.1,
                 }}

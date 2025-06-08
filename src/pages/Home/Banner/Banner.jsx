@@ -9,7 +9,8 @@ const slides = [
   {
     title: "Lost Something Valuable?",
     subtitle: "We help you reconnect with your lost items faster and easier.",
-    image: "https://i.ibb.co/J6VXDtd/image-689a07c8d63423b3915868133291e8de-1024x572.jpg",
+    image:
+      "https://i.ibb.co/J6VXDtd/image-689a07c8d63423b3915868133291e8de-1024x572.jpg",
     buttonText: "Report Lost Item",
     buttonLink: "/addItems",
   },
@@ -34,7 +35,6 @@ export default function Banner() {
     <div className="w-full h-[100vh] relative">
       <Swiper
         modules={[Navigation, Autoplay]}
-        
         loop
         autoplay={{ delay: 3000 }}
         className="h-full"
@@ -55,6 +55,7 @@ const SlideHero = ({ slide }) => (
     style={{ backgroundImage: `url(${slide.image})` }}
   >
     {/* Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
     <div className="absolute -z-0 inset-0 bg-gradient-to-b from-black/80 via-black/30 to-transparent"></div>
 
     {/* Content */}
@@ -71,11 +72,15 @@ const SlideHero = ({ slide }) => (
         {slide.subtitle}
       </p>
       <Link to={slide.buttonLink}>
-        <motion.button whileHover={{
-          scale: 1.1
-        }} transition={{
-          duration: 0
-        }} className="mt-6 px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg transition-all duration-300">
+        <motion.button
+          whileHover={{
+            scale: 1.1,
+          }}
+          transition={{
+            duration: 0,
+          }}
+          className="mt-6 px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg transition-all duration-300"
+        >
           {slide.buttonText}
         </motion.button>
       </Link>
