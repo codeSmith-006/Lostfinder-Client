@@ -5,8 +5,13 @@ import Home from "../pages/Home/Home";
 import LostnFound from "../pages/LostnFound/LostnFound";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import Error from "../pages/Error/Error";
+import AddItems from "../pages/AddItems/AddItems";
+import SecondaryLayout from "../layouts/SecondaryLayout";
 
 const Router = createBrowserRouter([
+
+  // main layout routes
   {
     path: "/",
     Component: MainLayout,
@@ -16,11 +21,14 @@ const Router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "lost-and-found",
-        Component: LostnFound,
-      },
+        path: 'addItems',
+        Component: AddItems
+      }
+
     ],
   },
+
+  // login/register routes
   {
     path: "login",
     Component: Login,
@@ -28,7 +36,15 @@ const Router = createBrowserRouter([
   {
     path: 'register',
     Component: Register
-  }
+  },
+
+  // error page
+  {
+    path: '*',
+    Component: Error
+  },
+
+  // secondary layout for different routes 
 ]);
 
 export default Router;

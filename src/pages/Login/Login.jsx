@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
@@ -6,33 +6,51 @@ import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { showToast } from "../../components/Toast/Toast";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../Auth/Firebase/Firebase.config";
 
 export default function Login() {
-  const {accountLogin} = use(AuthContext);
-  const [error, setError] = useState('');
+  const { accountLogin } = use(AuthContext);
+  const [error, setError] = useState("");
+
+  // navigation
+  const navigate = useNavigate();
 
   // handling submit login button
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // email 
+    // email
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-
-    // user login
+    // user login with email and password
     try {
       const userCredential = await accountLogin(email, password);
       if (userCredential?.user) {
-        showToast("success", "Signed in successfully")
+        navigate("/");
+        showToast("success", "Signed in successfully");
       }
-    } catch(err) {
+    } catch (err) {
       setError(err);
-      console.log(error)
-      showToast("error", `${error}`)
+      showToast("error", `${error}`);
     }
+  };
 
-  }
+  // handle google login button
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      if (userCredential?.user) {
+        navigate("/")
+        showToast("success", "Signed in successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <GradientAnimate>
       {/* Overlay */}
@@ -139,6 +157,7 @@ export default function Login() {
               <div className="text-center text-gray-300 text-sm">OR</div>
 
               <motion.button
+                onClick={handleGoogleLogin}
                 whileHover={{
                   scale: 1.02,
                 }}

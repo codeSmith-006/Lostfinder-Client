@@ -1,28 +1,33 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { use, useState } from "react";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import { AuthContext } from "../../context/AuthContext";
 import { showToast } from "../../components/Toast/Toast";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../Auth/Firebase/Firebase.config";
 
 export default function Register() {
   const [passwordError, setPasswordError] = useState("");
-  const {createAccount} = use(AuthContext);
+  const {createAccount, setPhotoURL, loggedUser} = use(AuthContext);
   const [error, setError] = useState('')
 
-
+  const navigate = useNavigate();
 
   // handle register button submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form);
-    const objectData = Object.fromEntries(formData.entries());
-
+    
+    const name = form.name.value;
+    const photoURL = form.photoURL.value;
+    const profile = {
+      displayName: name, photoURL: photoURL
+    }
+    console.log(updateProfile)
     const email = form.email.value;
     const password = form.password.value.trim();
-    console.log(email , password)
 
     // Password validation
     const hasUppercase = /[A-Z]/.test(password);
@@ -43,6 +48,17 @@ export default function Register() {
     try {
       const userCredential = await createAccount(email, password);
       if(userCredential?.user) {
+        // updating the photo url
+        setPhotoURL(photoURL);
+        navigate("/")
+        // updating the profile with name and photo url
+        updateProfile(auth.currentUser, profile)
+        .then(() => {
+          // profile updated!
+        })
+        .catch(error => console.log(error))
+
+        // show alert for user creation
         showToast("success", "Account created successfully!")
       }
     } catch(err) {
@@ -141,6 +157,7 @@ export default function Register() {
                   <input
                     name="password"
                     type="password"
+                    value='123@Rr'
                     required
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg"
                     placeholder="Password"

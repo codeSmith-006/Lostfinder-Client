@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { auth } from "../Auth/Firebase/Firebase.config";
 
 const AuthProvider = ({ children }) => {
-
+  const [photoURL, setPhotoURL] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,14 +30,15 @@ const AuthProvider = ({ children }) => {
     setLoading(true)
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setLoading(false)
+        setLoading(false);
+        setPhotoURL(user.photoURL);
         setCurrentUser(user)
       }
       else {
         setCurrentUser(null)
       }
     })
-    setLoading(false)
+    // setLoading(false)
     return () => unsubscribe();
   }, [])
 
@@ -47,7 +48,9 @@ const AuthProvider = ({ children }) => {
     createAccount,
     accountLogin,
     currentUser,
-    logout
+    logout,
+    photoURL,
+    setPhotoURL
   };
   return <AuthContext value={info}>{children}</AuthContext>;
 };

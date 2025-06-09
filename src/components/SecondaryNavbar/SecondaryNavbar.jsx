@@ -1,24 +1,17 @@
 import React, { use } from "react";
 import logo from "../../assets/LostFinder logo.png";
-import { NavLink, useLocation, useNavigation } from "react-router-dom";
+import { NavLink, useNavigation } from "react-router-dom";
 import * as motion from "motion/react-client";
-import AnimatedLink from "./AnimatedLinks/AnimatedLink";
 import { AuthContext } from "../../context/AuthContext";
 import { showToast } from "../Toast/Toast";
 import { Tooltip } from "@mui/material";
+import AnimatedLink from "../Navbar/AnimatedLinks/AnimatedLink";
 
-const Navbar = () => {
+const SecondaryNavbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
   console.log(currentUser);
 
   const navigate = useNavigation();
-  const location = useLocation();
-
-  // conditional bag
-  const bg =
-    location.pathname === "/"
-      ? "bg-transparent"
-      : "bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)]";
 
   // handle logout button
   const handleLogout = () => {
@@ -32,15 +25,11 @@ const Navbar = () => {
   console.log(loading);
   return (
     <div className="">
-      <div
-        className={`navbar ${bg} flex justify-between ${
-          location.pathname === "/" ? "absolute" : ""
-        } z-40 px-5 py-5 md:py-7`}
-      >
+      <div className="navbar bg-transparent flex justify-between absolute z-50 px-5 py-5 md:py-7">
         {/* logo section */}
         <div className="flex items-center gap-4">
           <img src={logo} className="w-10 md:w-14" alt="" />
-          <a href="/" className={` text-white font-bold text-xl md:text-3xl`}>
+          <a href="/" className=" text-white font-bold text-xl md:text-3xl">
             LostFinder
           </a>
         </div>
@@ -66,7 +55,7 @@ const Navbar = () => {
                 transition={{
                   duration: 0.2,
                 }}
-                className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
+                className="px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg"
               >
                 Logout
               </motion.button>
@@ -130,7 +119,7 @@ const Navbar = () => {
                   transition={{
                     duration: 0.2,
                   }}
-                  className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
+                  className="px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg"
                 >
                   Login
                 </motion.button>
@@ -143,4 +132,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SecondaryNavbar;
