@@ -4,10 +4,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { showToast } from "../../components/Toast/Toast";
 import { AuthContext } from "../../context/AuthContext";
+import { object } from "motion/react-client";
 
 const AddItems = () => {
   const [currentDate, selectedDate] = useState(new Date());
   const {currentUser} = use(AuthContext);
+  const date = currentDate.toISOString();
 
   //   handle form submit
   const handleSubmit = async (event) => {
@@ -15,7 +17,11 @@ const AddItems = () => {
 
     const form = event.target;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const objectData = Object.fromEntries(formData.entries());
+    const data = {
+        ...objectData, date
+    }
+    console.log(data)
 
     try {
         const response = await axios.post("http://localhost:5000/items", data);
