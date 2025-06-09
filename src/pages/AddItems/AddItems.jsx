@@ -157,6 +157,7 @@ const AddItems = () => {
             </label>
             <input
               type="email"
+              name="email"
               value={currentUser?.email}
               readOnly
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-500"

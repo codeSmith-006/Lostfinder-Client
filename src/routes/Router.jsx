@@ -9,9 +9,9 @@ import Error from "../pages/Error/Error";
 import AddItems from "../pages/AddItems/AddItems";
 import SecondaryLayout from "../layouts/SecondaryLayout";
 import AllItems from "../pages/AllItems/AllItems";
+import CardDetails from "../pages/CardDetails/CardDetails";
 
 const Router = createBrowserRouter([
-
   // main layout routes
   {
     path: "/",
@@ -22,15 +22,19 @@ const Router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: 'addItems',
-        Component: AddItems
+        path: "addItems",
+        Component: AddItems,
       },
       {
-        path: 'allItems',
-        loader: () => fetch('http://localhost:5000/items'),
-        Component: AllItems
-      }
-
+        path: "allItems",
+        loader: () => fetch("http://localhost:5000/items"),
+        Component: AllItems,
+      },
+      {
+        path: "allItems/:id",
+        loader: ({params}) => fetch(`http://localhost:5000/items/${params.id}`),
+        Component: CardDetails
+      },
     ],
   },
 
@@ -40,17 +44,17 @@ const Router = createBrowserRouter([
     Component: Login,
   },
   {
-    path: 'register',
-    Component: Register
+    path: "register",
+    Component: Register,
   },
 
   // error page
   {
-    path: '*',
-    Component: Error
+    path: "*",
+    Component: Error,
   },
 
-  // secondary layout for different routes 
+  // secondary layout for different routes
 ]);
 
 export default Router;
