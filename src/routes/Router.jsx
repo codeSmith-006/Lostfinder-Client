@@ -8,6 +8,7 @@ import Register from "../pages/Register/Register";
 import Error from "../pages/Error/Error";
 import AddItems from "../pages/AddItems/AddItems";
 import SecondaryLayout from "../layouts/SecondaryLayout";
+import AllItems from "../pages/AllItems/AllItems";
 
 const Router = createBrowserRouter([
 
@@ -23,6 +24,11 @@ const Router = createBrowserRouter([
       {
         path: 'addItems',
         Component: AddItems
+      },
+      {
+        path: 'allItems',
+        loader: () => fetch('http://localhost:5000/items'),
+        Component: AllItems
       }
 
     ],

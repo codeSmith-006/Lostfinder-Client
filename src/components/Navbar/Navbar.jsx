@@ -9,7 +9,6 @@ import { Tooltip } from "@mui/material";
 
 const Navbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
-  console.log(currentUser);
 
   const navigate = useNavigation();
   const location = useLocation();
@@ -29,7 +28,6 @@ const Navbar = () => {
       })
       .catch((error) => console.log(error));
   };
-  console.log(loading);
   return (
     <div className="">
       <div
@@ -52,7 +50,7 @@ const Navbar = () => {
             <AnimatedLink to="/">Home</AnimatedLink>
 
             {/* lost and find items */}
-            <AnimatedLink to="/lost-and-found">Lost & Found Items</AnimatedLink>
+            <AnimatedLink to="/allItems">Lost & Found Items</AnimatedLink>
           </div>
           {loading ? (
             <span className="loading loading-spinner text-info"></span>
@@ -97,7 +95,7 @@ const Navbar = () => {
                     </li>
                     <li>
                       <NavLink
-                        to="/lost-and-found"
+                        to="/allItems"
                         className="hidden md:flex justify-between"
                       >
                         Lost & Found Items

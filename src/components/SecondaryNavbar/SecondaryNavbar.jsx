@@ -9,7 +9,6 @@ import AnimatedLink from "../Navbar/AnimatedLinks/AnimatedLink";
 
 const SecondaryNavbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
-  console.log(currentUser);
 
   const navigate = useNavigation();
 
@@ -22,7 +21,6 @@ const SecondaryNavbar = () => {
       })
       .catch((error) => console.log(error));
   };
-  console.log(loading);
   return (
     <div className="">
       <div className="navbar bg-transparent flex justify-between absolute z-50 px-5 py-5 md:py-7">
