@@ -1,40 +1,88 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { showToast } from "../../components/Toast/Toast";
 
 const CardDetails = () => {
   const { currentUser } = use(AuthContext);
+  const [recoveredItems, setRecoveredItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [isRecover, setIsRecover] = useState(false);
   // recovery date
   const [recoveryDate, setRecoveryDate] = useState(new Date());
   const recoveredDate = recoveryDate.toISOString();
+
+  // fetching allRecovered items data
+  useEffect(() => {
+    fetch("http://localhost:5000/allRecovered")
+      .then((response) => response.json())
+      .then((data) => setRecoveredItems(data))
+      .catch((error) =>
+        console.log("Error while fetching allRecovered: ", error)
+      );
+  }, []);
+
+  console.log("Recovered items: ", recoveredItems[0]);
+
   // getting the data? data
   const data = useLoaderData();
+  console.log("details data: ", data);
+
+  // get the data that i want to check for isRecovered
+  const specificData = recoveredItems.find(
+    (singleData) => singleData.userEmail == data.email
+  );
+
+  console.log("Specific data: ", specificData?.isRecover);
+
+  // checking if the item is recovered or not
+  useEffect(() => {
+    if (specificData?.isRecover) {
+      setIsRecover(true);
+    } else {
+      setIsRecover(false);
+    }
+  }, [specificData?.isRecover]);
+
+  console.log(" specificData?.isRecover: ", specificData?.isRecover);
 
   // navigate
   const navigate = useNavigate();
 
-  // get modal data 
-  const handleSubmit = event => {
+  // get modal data
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const form = event.target;
 
-    // recovered location 
+    // recovered location
     const recoveredLocation = event.target.Location.value;
-    
+
     // form data after submit Found This / This is mine modal
     const formData = {
-        recoveredLocation, 
-        recoveredDate,
-        isRecover,
-        userName : currentUser?.displayName,
-        userPhoto : currentUser?.photoURL,
-        userEmail : currentUser?.email
-    }
+      recoveredLocation,
+      recoveredDate,
+      isRecover,
+      userName: currentUser?.displayName,
+      userPhoto: currentUser?.photoURL,
+      userEmail: currentUser?.email,
+    };
 
-    console.log(formData)
-  }
+    // posting recovered items data from client side to server
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/allRecovered",
+        formData
+      );
+      if (response.data?.insertedId) {
+        showToast("success", "Data posted successfully");
+        form.reset();
+      }
+    } catch (error) {
+      console.log("Error while post data to database: ", error);
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
@@ -55,7 +103,7 @@ const CardDetails = () => {
 
       {/* Recovered Status */}
       <p className="text-center text-sm font-medium text-gray-700">
-        {data?.isRecovered ? (
+        {specificData?.isRecover ? (
           <span className="text-green-600">✅ Recovered</span>
         ) : (
           <span className="text-red-500">❌ Not Recovered</span>
@@ -103,7 +151,8 @@ const CardDetails = () => {
       {/* Date Lost/Found */}
       <p className="text-md text-gray-600 flex items-center gap-2">
         <i className="fas fa-calendar-day text-teal-400"></i>
-        <span className="font-medium">Date Lost/Found:</span> {data?.date}
+        <span className="font-medium">Date Lost/Found:</span>{" "}
+        {data?.currentDate}
       </p>
 
       {/* Description */}
@@ -115,10 +164,15 @@ const CardDetails = () => {
       {/* Action Button */}
       <div className="pt-6">
         <button
+          disabled={specificData?.isRecover}
           onClick={() => setModalOpen(true)}
           className="bg-teal-500 hover:bg-teal-600 cursor-pointer transition-all text-white font-semibold py-3 px-6 rounded-full shadow-md"
         >
-          {data?.postType === "lost" ? "Found This!" : "This is Mine!"}
+          {specificData?.isRecover
+            ? "Recovered"
+            : data?.postType === "lost"
+            ? "Found This!"
+            : "This is Mine!"}
         </button>
       </div>
 

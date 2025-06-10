@@ -6,7 +6,7 @@ const AllItems = () => {
 
     // fetching data from database
     const addedData = useLoaderData();
-    console.log(addedData)
+    // console.log("added data: ",addedData)
     return (
   <div className="max-w-6xl mx-auto px-4 py-8">
     <h2 className="text-3xl font-bold text-teal-600 mb-6 text-center">
