@@ -34,6 +34,8 @@ const CardDetails = () => {
     (singleData) => singleData?.recoveredId == data?._id
   );
 
+  console.log("Current date: ", data?.date)
+
   // navigate
   const navigate = useNavigate();
 
@@ -143,13 +145,17 @@ const CardDetails = () => {
       <p className="text-md text-gray-600 flex items-center gap-2">
         <i className="fas fa-calendar-day text-teal-400"></i>
         <span className="font-medium">Date Lost/Found:</span>{" "}
-        {data?.currentDate
-          ? new Date(data.currentDate).toLocaleDateString("en-US", {
+        {data?.date ? (
+          <span className="ml-1">
+            {new Date(data.date).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
-            })
-          : "N/A"}
+            })}
+          </span>
+        ) : (
+          <span className="ml-1">N/A</span>
+        )}
       </p>
 
       {/* Description */}

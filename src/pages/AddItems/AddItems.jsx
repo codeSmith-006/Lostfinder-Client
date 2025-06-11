@@ -4,11 +4,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { showToast } from "../../components/Toast/Toast";
 import { AuthContext } from "../../context/AuthContext";
-import { object } from "motion/react-client";
 
 const AddItems = () => {
   const [currentDate, selectedDate] = useState(new Date());
-  const {currentUser} = use(AuthContext);
+  const { currentUser } = use(AuthContext);
   const date = currentDate.toISOString();
 
   //   handle form submit
@@ -19,18 +18,19 @@ const AddItems = () => {
     const formData = new FormData(form);
     const objectData = Object.fromEntries(formData.entries());
     const data = {
-        ...objectData, date
-    }
-    console.log(data)
+      ...objectData,
+      date,
+    };
+    console.log(data);
 
     try {
-        const response = await axios.post("http://localhost:5000/items", data);
-        if(response.data?.insertedId) {
-            showToast('success', 'Item added successfully')
-            form.reset();
-        }
+      const response = await axios.post("http://localhost:5000/items", data);
+      if (response.data?.insertedId) {
+        showToast("success", "Item added successfully");
+        form.reset();
+      }
     } catch (error) {
-        console.log("Error from client side for added items: ", error)
+      console.log("Error from client side for added items: ", error);
     }
   };
   return (
@@ -132,7 +132,8 @@ const AddItems = () => {
 
         {/* Date */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-gray-700">
+            <i className="fas fa-calendar-day mr-1 text-teal-500"></i>
             Date Lost or Found <span className="text-red-500">*</span>
           </label>
           <DatePicker
@@ -140,8 +141,19 @@ const AddItems = () => {
             onChange={(date) => selectedDate(date)}
             placeholderText="Select a date"
             required
+            dateFormat="yyyy-MM-dd"
             className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-teal-500"
           />
+          {currentDate && (
+            <p className="text-sm text-gray-500 mt-1">
+              📅 Formatted:{" "}
+              {currentDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          )}
         </div>
 
         {/* Contact Info */}
@@ -151,7 +163,7 @@ const AddItems = () => {
               Your Name <span className="text-red-500">*</span>
             </label>
             <input
-            value={currentUser?.displayName}
+              value={currentUser?.displayName}
               type="text"
               readOnly
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-500"
@@ -174,7 +186,7 @@ const AddItems = () => {
         {/* Submit */}
         <div className="pt-4">
           <input
-            type="submit" 
+            type="submit"
             value="Add Post"
             className="w-full cursor-pointer btn bg-teal-500 hover:bg-teal-600 transition-all text-white font-semibold py-3 rounded-full shadow-sm"
           />

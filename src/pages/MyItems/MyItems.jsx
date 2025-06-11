@@ -1,5 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import DatePicker from "react-datepicker";
+import axios from "axios";
 
 const MyItems = () => {
   // current user
@@ -15,7 +17,10 @@ const MyItems = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
   // modal open behave
-  const[updateModalOpen, setUpdateModalOpen] = useState(false)
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
+  // selected date 
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   // fetching allRecovered data
   useEffect(() => {
@@ -34,19 +39,36 @@ const MyItems = () => {
   }, []);
 
   // getting the users post only
-  const userPosts = allItems?.filter(
+  const SelectedPost = allItems?.filter(
     (singleData) => singleData.email == currentUserEmail
   );
 
-  // handle delete button 
-  const handleDelete = () => {
-
-  }
+  // handle delete button
+  const handleDelete = () => {};
 
   // handle update submit button
   const handleUpdateSubmit = () => {
 
-  }
+  };
+
+  // handling update data form
+  const handleUpdateForm = (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+    console.log("Selected date: ", selectedDate)
+
+    // sending data to backend
+    try {
+        const response = axios.post('http://localhost:5000/items', selectedPost?._id);
+        console.log(response.data);
+        
+    } catch (error) {
+        console.log("Error while post form data to backend ", error)
+    }
+  };
+
+  console.log("Selected post: ", selectedPost)
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
@@ -54,7 +76,7 @@ const MyItems = () => {
         My Posted Items
       </h2>
 
-      {userPosts?.length > 0 ? (
+      {SelectedPost?.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
             <thead className="bg-teal-50 text-teal-700">
@@ -77,7 +99,7 @@ const MyItems = () => {
               </tr>
             </thead>
             <tbody>
-              {userPosts.map((item) => (
+              {SelectedPost.map((item) => (
                 <tr key={item.id} className="hover:bg-teal-50 border-t">
                   <td className="py-3 px-4">
                     <img
@@ -122,166 +144,178 @@ const MyItems = () => {
       )}
 
       {/* Update Modal */}
-{updateModalOpen && selectedPost && (
-  <dialog open className="modal modal-bottom sm:modal-middle">
-    <div className="modal-box rounded-2xl space-y-4 p-6">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        <i className="fas fa-pen text-teal-500 mr-2"></i>Update Item
-      </h3>
+      {updateModalOpen && selectedPost && (
+        <dialog open className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box rounded-2xl space-y-4 p-6">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              <i className="fas fa-pen text-teal-500 mr-2"></i>Update Item
+            </h3>
 
-      {/* Post Type */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-exchange-alt mr-1 text-teal-500"></i>Post Type
-        </label>
-        <select
-          name="postType"
-        
-          className="select select-bordered w-full"
-          required
-          defaultValue={currentUser?.postType}
-        >
-          <option value="">Select Type</option>
-          <option value="lost">Lost</option>
-          <option value="found">Found</option>
-        </select>
-      </div>
+            {/* updated data form */}
+            <form onSubmit={handleUpdateForm}>
+              {/* Post Type */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-exchange-alt mr-1 text-teal-500"></i>Post
+                  Type
+                </label>
+                <select
+                  name="postType"
+                  className="select select-bordered w-full"
+                  required
+                  defaultValue={selectedPost?.postType}
+                >
+                  <option value="">Select Type</option>
+                  <option value="lost">Lost</option>
+                  <option value="found">Found</option>
+                </select>
+              </div>
 
-      {/* Thumbnail */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-image mr-1 text-teal-500"></i>Thumbnail URL
-        </label>
-        <input
-          type="text"
-          name="thumbnail"
-        
-          className="input input-bordered w-full"
-          required
-          defaultValue={currentUser?.thumbnail}
-        />
-      </div>
+              {/* Thumbnail */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-image mr-1 text-teal-500"></i>Thumbnail
+                  URL
+                </label>
+                <input
+                  type="text"
+                  name="thumbnail"
+                  className="input input-bordered w-full"
+                  required
+                  defaultValue={selectedPost?.thumbnail}
+                />
+              </div>
 
-      {/* Title */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-tag mr-1 text-teal-500"></i>Title
-        </label>
-        <input
-          type="text"
-          name="title"
-        
-          className="input input-bordered w-full"
-          required
-          defaultValue={currentUser?.title}
-        />
-      </div>
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-tag mr-1 text-teal-500"></i>Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  className="input input-bordered w-full"
+                  required
+                  defaultValue={selectedPost?.title}
+                />
+              </div>
 
-      {/* Description */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-info-circle mr-1 text-teal-500"></i>Description
-        </label>
-        <textarea
-          name="description"
-        
-          className="textarea textarea-bordered w-full"
-          rows={3}
-          required
-          defaultValue={currentUser?.description}
-        ></textarea>
-      </div>
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-info-circle mr-1 text-teal-500"></i>
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  className="textarea textarea-bordered w-full"
+                  rows={3}
+                  required
+                  defaultValue={selectedPost?.description}
+                ></textarea>
+              </div>
 
-      {/* Category */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-layer-group mr-1 text-teal-500"></i>Category
-        </label>
-        <input
-          type="text"
-          name="category"
-        
-          className="input input-bordered w-full"
-          required
-          defaultValue={currentUser?.category}
-        />
-      </div>
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-layer-group mr-1 text-teal-500"></i>
+                  Category
+                </label>
+                <input
+                  type="text"
+                  name="category"
+                  className="input input-bordered w-full"
+                  required
+                  defaultValue={SelectedPost?.category}
+                />
+              </div>
 
-      {/* Location */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-map-marker-alt mr-1 text-teal-500"></i>Location
-        </label>
-        <input
-          type="text"
-          name="location"
-        
-          className="input input-bordered w-full"
-          required
-          defaultValue={currentUser?.location}
-        />
-      </div>
+              {/* Location */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-map-marker-alt mr-1 text-teal-500"></i>
+                  Location
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  className="input input-bordered w-full"
+                  required
+                  defaultValue={selectedPost?.location}
+                />
+              </div>
 
-      {/* Date Lost/Found */}
-      <div>
-        <label className="block text-sm font-medium mb-1 text-gray-700">
-          <i className="fas fa-calendar-day mr-1 text-teal-500"></i>Date Lost/Found
-        </label>
-        <input
-          type="date"
-          name="date"
-        
-          className="input input-bordered w-full"
-          required
-          defaultValue={currentUser?.date}
-        />
-      </div>
+              {/* Date Lost/Found */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1 text-gray-700">
+                  <i className="fas fa-calendar-day mr-1 text-teal-500"></i>
+                  Date Lost or Found <span className="text-red-500">*</span>
+                </label>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  placeholderText="Select a date"
+                  required
+                  dateFormat="yyyy-MM-dd"
+                  className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-teal-500"
+                />
+                {selectedDate && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    📅 Formatted:{" "}
+                    {selectedDate.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
+              </div>
 
-      {/* User Info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
-            <i className="fas fa-user mr-1 text-teal-500"></i>Your Name
-          </label>
-          <input
-            type="text"
-            value={currentUser?.displayName}
-            readOnly
-            className="input input-bordered w-full bg-gray-100 text-gray-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
-            <i className="fas fa-envelope mr-1 text-teal-500"></i>Email
-          </label>
-          <input
-            type="email"
-            value={currentUser?.email}
-            readOnly
-            className="input input-bordered w-full bg-gray-100 text-gray-500"
-          />
-        </div>
-      </div>
+              {/* User Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    <i className="fas fa-user mr-1 text-teal-500"></i>Your Name
+                  </label>
+                  <input
+                    type="text"
+                    value={currentUser?.displayName}
+                    readOnly
+                    className="input input-bordered w-full bg-gray-100 text-gray-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    <i className="fas fa-envelope mr-1 text-teal-500"></i>Email
+                  </label>
+                  <input
+                    type="email"
+                    value={currentUser?.email}
+                    readOnly
+                    className="input input-bordered w-full bg-gray-100 text-gray-500"
+                  />
+                </div>
+              </div>
 
-      {/* Modal Actions */}
-      <div className="modal-action">
-        <button
-          onClick={() => setUpdateModalOpen(false)}
-          className="btn btn-ghost"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleUpdateSubmit}
-          className="btn bg-teal-500 hover:bg-teal-600 text-white"
-        >
-          Save Changes
-        </button>
-      </div>
-    </div>
-  </dialog>
-)}
-
+              {/* Modal Actions */}
+              <div className="modal-action">
+                <button
+                  onClick={() => setUpdateModalOpen(false)}
+                  className="btn btn-ghost"
+                >
+                  Cancel
+                </button>
+                <input
+                  type="submit"
+                  value="Save Changes"
+                  onClick={handleUpdateSubmit}
+                  className="btn bg-teal-500 hover:bg-teal-600 text-white"
+                />
+              </div>
+            </form>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };
