@@ -9,7 +9,6 @@ const CardDetails = () => {
   const { currentUser } = use(AuthContext);
   const [recoveredItems, setRecoveredItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [isRecover, setIsRecover] = useState(false);
   // recovery date
   const [recoveryDate, setRecoveryDate] = useState(new Date());
   const recoveredDate = recoveryDate.toISOString();
@@ -32,21 +31,8 @@ const CardDetails = () => {
 
   // get the data that i want to check for isRecovered
   const specificData = recoveredItems.find(
-    (singleData) => singleData.userEmail == data.email
+    (singleData) => singleData?.recoveredId == data?._id
   );
-
-  console.log("Specific data: ", specificData?.isRecover);
-
-  // checking if the item is recovered or not
-  useEffect(() => {
-    if (specificData?.isRecover) {
-      setIsRecover(true);
-    } else {
-      setIsRecover(false);
-    }
-  }, [specificData?.isRecover]);
-
-  console.log(" specificData?.isRecover: ", specificData?.isRecover);
 
   // navigate
   const navigate = useNavigate();
@@ -63,11 +49,16 @@ const CardDetails = () => {
     const formData = {
       recoveredLocation,
       recoveredDate,
-      isRecover,
+      isRecover: true,
+      recoveredId: data?._id,
+      recoveredTitle: data?.title,
       userName: currentUser?.displayName,
       userPhoto: currentUser?.photoURL,
       userEmail: currentUser?.email,
     };
+
+    console.log(formData)
+
 
     // posting recovered items data from client side to server
     try {
@@ -260,7 +251,6 @@ const CardDetails = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={() => setIsRecover(true)}
                   type="submit"
                   className="btn bg-teal-500 hover:bg-teal-600 text-white"
                 >

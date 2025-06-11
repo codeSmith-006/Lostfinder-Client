@@ -10,6 +10,7 @@ import AddItems from "../pages/AddItems/AddItems";
 import SecondaryLayout from "../layouts/SecondaryLayout";
 import AllItems from "../pages/AllItems/AllItems";
 import CardDetails from "../pages/CardDetails/CardDetails";
+import AllRecovered from "../pages/AllRecovered/AllRecovered";
 
 const Router = createBrowserRouter([
   // main layout routes
@@ -35,6 +36,10 @@ const Router = createBrowserRouter([
         loader: ({params}) => fetch(`http://localhost:5000/items/${params.id}`),
         Component: CardDetails
       },
+      {
+        path: 'recoveredItems',
+        // Component: AllRecovered
+      }
     ],
   },
 
