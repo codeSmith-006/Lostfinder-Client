@@ -11,6 +11,7 @@ import SecondaryLayout from "../layouts/SecondaryLayout";
 import AllItems from "../pages/AllItems/AllItems";
 import CardDetails from "../pages/CardDetails/CardDetails";
 import AllRecovered from "../pages/AllRecovered/AllRecovered";
+import MyItems from "../pages/MyItems/MyItems";
 
 const Router = createBrowserRouter([
   // main layout routes
@@ -39,6 +40,10 @@ const Router = createBrowserRouter([
       {
         path: 'recoveredItems',
         Component: AllRecovered
+      },
+      {
+        path: 'myItems',
+        Component: MyItems
       }
     ],
   },

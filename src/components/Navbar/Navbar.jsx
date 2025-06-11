@@ -112,7 +112,7 @@ const Navbar = () => {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/manage-my-items">Manage My Items</NavLink>
+                      <NavLink to="/myItems">Manage My Items</NavLink>
                     </li>
                   </ul>
                 </div>
