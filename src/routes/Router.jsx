@@ -38,7 +38,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'recoveredItems',
-        // Component: AllRecovered
+        Component: AllRecovered
       }
     ],
   },

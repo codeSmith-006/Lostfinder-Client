@@ -5,28 +5,10 @@ const AllRecovered = () => {
   // all recovered data
   const [allRecovered, setAllRecovered] = useState([]);
   // all items
-  const [allItems, setAllItems] = useState([])
   // current user
   const { currentUser } = use(AuthContext);
   // current user's email
   const currentUserEmail = currentUser?.email;
-
-  // fetching all items data
-  useEffect(() => {
-    const fetchAllRecovered = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/items");
-        const data = await response.json();
-        setAllItems(data);
-      } catch (error) {
-        console.log("Error when fetching allRecovered: ", error);
-      }
-    };
-
-    // calling fetchAllRecovered();
-    fetchAllRecovered();
-  }, []);
-
 
   // fetching allRecovered data
   useEffect(() => {
@@ -44,14 +26,10 @@ const AllRecovered = () => {
     fetchAllRecovered();
   }, []);
 
-  const recoveredCurrentEmail = allRecovered.find(
+  const usersPost = allRecovered.filter(
     (singleData) => singleData.userEmail == currentUserEmail
-  )?.userEmail;
-
-  // getting data that only for the logged user
-  const usersPost = allItems.filter(
-    (singleData) => singleData.userEmail == recoveredCurrentEmail
   );
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
       <h2 className="text-3xl font-semibold text-center text-teal-600 mb-6">
@@ -84,14 +62,20 @@ const AllRecovered = () => {
                   className="hover:bg-teal-50 transition-colors border-t"
                 >
                   <td className="py-3 px-4 text-gray-800 font-medium">
-                    {item.title}
+                    {item.recoveredTitle}
                   </td>
-                  <td className="py-3 px-4 text-gray-600">{item.category}</td>
+                  <td className="py-3 px-4 text-gray-600">
+                    {item.recoveredCategory}
+                  </td>
                   <td className="py-3 px-4 text-gray-600">
                     {item.recoveredLocation}
                   </td>
                   <td className="py-3 px-4 text-gray-600">
-                    {item.recoveryDate}
+                    {new Date(item.recoveredDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </td>
                 </tr>
               ))}

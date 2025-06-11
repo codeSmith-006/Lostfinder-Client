@@ -52,13 +52,13 @@ const CardDetails = () => {
       isRecover: true,
       recoveredId: data?._id,
       recoveredTitle: data?.title,
+      recoveredCategory: data?.category,
       userName: currentUser?.displayName,
       userPhoto: currentUser?.photoURL,
       userEmail: currentUser?.email,
     };
 
-    console.log(formData)
-
+    console.log(formData);
 
     // posting recovered items data from client side to server
     try {
@@ -143,7 +143,13 @@ const CardDetails = () => {
       <p className="text-md text-gray-600 flex items-center gap-2">
         <i className="fas fa-calendar-day text-teal-400"></i>
         <span className="font-medium">Date Lost/Found:</span>{" "}
-        {data?.currentDate}
+        {data?.currentDate
+          ? new Date(data.currentDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "N/A"}
       </p>
 
       {/* Description */}
