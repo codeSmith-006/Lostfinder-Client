@@ -2,6 +2,8 @@ import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import DatePicker from "react-datepicker";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
+import { showToast } from "../../components/Toast/Toast";
 
 const MyItems = () => {
   // current user
@@ -19,8 +21,8 @@ const MyItems = () => {
   // modal open behave
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  // selected date 
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  // selected date
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // fetching allRecovered data
   useEffect(() => {
@@ -47,28 +49,32 @@ const MyItems = () => {
   const handleDelete = () => {};
 
   // handle update submit button
-  const handleUpdateSubmit = () => {
-
-  };
+  const handleUpdateSubmit = () => {};
 
   // handling update data form
-  const handleUpdateForm = (event) => {
+  const handleUpdateForm = async (event) => {
     event.preventDefault();
 
     const form = event.target;
-    console.log("Selected date: ", selectedDate)
+    const formData = new FormData(form);
+    const objectData = Object.fromEntries(formData.entries());
+    const updatedData = {
+      recoveredId: selectedPost?._id,
+      ...objectData,
+      date: selectedDate
+    };
 
     // sending data to backend
     try {
-        const response = axios.post('http://localhost:5000/items', selectedPost?._id);
-        console.log(response.data);
-        
+      const response = await axios.patch("http://localhost:5000/items", updatedData);
+      console.log(response.data)
+      if (response.data?.modifiedCount) {
+        showToast('success', 'Data updated successfully')
+      }
     } catch (error) {
-        console.log("Error while post form data to backend ", error)
+      console.log("Error while post form data to backend ", error);
     }
   };
-
-  console.log("Selected post: ", selectedPost)
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
@@ -112,16 +118,18 @@ const MyItems = () => {
                   <td className="py-3 px-4">{item.category}</td>
                   <td className="py-3 px-4">{item.location}</td>
                   <td className="py-3 px-4 text-center space-x-3">
-                    <button
-                      onClick={() => {
-                        setSelectedPost(item);
-                        setUpdateModalOpen(true);
-                      }}
-                      className="text-teal-500 hover:text-teal-700"
-                      title="Update"
-                    >
-                      <i className="fas fa-edit text-lg"></i>
-                    </button>
+                    <NavLink>
+                      <button
+                        onClick={() => {
+                          setSelectedPost(item);
+                          setUpdateModalOpen(true);
+                        }}
+                        className="text-teal-500 hover:text-teal-700"
+                        title="Update"
+                      >
+                        <i className="fas fa-edit text-lg"></i>
+                      </button>
+                    </NavLink>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="text-red-500 hover:text-red-700"
@@ -216,18 +224,23 @@ const MyItems = () => {
               </div>
 
               {/* Category */}
-              <div>
+              <div className="mb-4">
                 <label className="block text-sm font-medium mb-1 text-gray-700">
                   <i className="fas fa-layer-group mr-1 text-teal-500"></i>
-                  Category
+                  Category <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
+                <select
                   name="category"
-                  className="input input-bordered w-full"
                   required
-                  defaultValue={SelectedPost?.category}
-                />
+                  defaultValue={selectedPost?.category || ""}
+                  className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-teal-500"
+                >
+                  <option value="">Select Category</option>
+                  <option value="pets">Pets</option>
+                  <option value="documents">Documents</option>
+                  <option value="gadgets">Gadgets</option>
+                  <option value="others">Others</option>
+                </select>
               </div>
 
               {/* Location */}
