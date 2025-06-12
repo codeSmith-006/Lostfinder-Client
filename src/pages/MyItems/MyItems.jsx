@@ -24,6 +24,7 @@ const MyItems = () => {
   // selected date
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+
   // fetching allRecovered data
   useEffect(() => {
     const fetchAllRecovered = async () => {
@@ -45,11 +46,24 @@ const MyItems = () => {
     (singleData) => singleData.email == currentUserEmail
   );
 
-  // handle delete button
-  const handleDelete = () => {};
 
-  // handle update submit button
-  const handleUpdateSubmit = () => {};
+  // handle delete button
+  const handleDelete = async (id) => {
+    const targetedId = {
+        id
+    }
+    console.log("targeted id: ", targetedId)
+    try {
+        const response = await axios.delete('http://localhost:5000/items', {data: targetedId});
+        if(response.data?.deletedCount) {
+            const dataAfterDelete = allItems.filter(singleData => singleData._id !== id);
+            setAllItems(dataAfterDelete)
+        }
+    } catch (error) {
+        console.log("While deleted method from client side: ", error)
+    }
+  };
+
 
   // handling update data form
   const handleUpdateForm = async (event) => {
@@ -124,15 +138,17 @@ const MyItems = () => {
                           setSelectedPost(item);
                           setUpdateModalOpen(true);
                         }}
-                        className="text-teal-500 hover:text-teal-700"
+                        className="text-teal-500 cursor-pointer hover:text-teal-700"
                         title="Update"
                       >
                         <i className="fas fa-edit text-lg"></i>
                       </button>
                     </NavLink>
                     <button
-                      onClick={() => handleDelete(item.id)}
-                      className="text-red-500 hover:text-red-700"
+                      onClick={() => {
+                        handleDelete(item?._id)
+                    }}
+                      className="text-red-500 cursor-pointer hover:text-red-700"
                       title="Delete"
                     >
                       <i className="fas fa-trash-alt text-lg"></i>
@@ -321,7 +337,6 @@ const MyItems = () => {
                 <input
                   type="submit"
                   value="Save Changes"
-                  onClick={handleUpdateSubmit}
                   className="btn bg-teal-500 hover:bg-teal-600 text-white"
                 />
               </div>
