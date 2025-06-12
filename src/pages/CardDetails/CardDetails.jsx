@@ -12,6 +12,8 @@ const CardDetails = () => {
   // recovery date
   const [recoveryDate, setRecoveryDate] = useState(new Date());
   const recoveredDate = recoveryDate.toISOString();
+  // isRecovered
+  const [isRecoverBool, setIsRecoveredBool] = useState(false);
 
   // fetching allRecovered items data
   useEffect(() => {
@@ -34,7 +36,7 @@ const CardDetails = () => {
     (singleData) => singleData?.recoveredId == data?._id
   );
 
-  console.log("Current date: ", data?.date)
+  console.log("Current date: ", data?.date);
 
   // navigate
   const navigate = useNavigate();
@@ -77,6 +79,8 @@ const CardDetails = () => {
     }
   };
 
+
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
       {/* Back Button */}
@@ -96,7 +100,7 @@ const CardDetails = () => {
 
       {/* Recovered Status */}
       <p className="text-center text-sm font-medium text-gray-700">
-        {specificData?.isRecover ? (
+        {isRecoverBool || specificData?.isRecover ? (
           <span className="text-green-600">✅ Recovered</span>
         ) : (
           <span className="text-red-500">❌ Not Recovered</span>
@@ -171,7 +175,7 @@ const CardDetails = () => {
           onClick={() => setModalOpen(true)}
           className="bg-teal-500 hover:bg-teal-600 cursor-pointer transition-all text-white font-semibold py-3 px-6 rounded-full shadow-md"
         >
-          {specificData?.isRecover
+          {isRecoverBool || specificData?.isRecover
             ? "Recovered"
             : data?.postType === "lost"
             ? "Found This!"
@@ -263,6 +267,7 @@ const CardDetails = () => {
                   Cancel
                 </button>
                 <button
+                  onClick={() => setIsRecoveredBool(true)}
                   type="submit"
                   className="btn bg-teal-500 hover:bg-teal-600 text-white"
                 >

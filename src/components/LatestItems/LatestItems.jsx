@@ -74,7 +74,7 @@ return (
             </p>
             <button
               onClick={() => navigate(`/items/${item._id}`)}
-              className="mt-2 inline-block bg-teal-500 text-white px-4 py-1.5 rounded-lg hover:bg-teal-600 transition"
+              className="mt-2 cursor-pointer inline-block bg-teal-500 text-white px-4 py-1.5 rounded-lg hover:bg-teal-600 transition"
             >
               <i className="fas fa-eye mr-1"></i> View Details
             </button>
@@ -87,7 +87,7 @@ return (
     <div className="text-center mt-8">
       <button
         onClick={() => navigate("/allItems")}
-        className="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition"
+        className="bg-teal-500 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition"
       >
         <i className="fas fa-arrow-right mr-1"></i> See All
       </button>
