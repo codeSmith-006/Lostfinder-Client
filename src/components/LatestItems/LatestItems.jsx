@@ -9,6 +9,7 @@ const LatestsortedData = () => {
   // loading
   const [loading, setLoading] = useState(true);
   const [sortedData, setSortedData] = useState([]);
+  console.log("Sorted data: ", sortedData[0])
   // navigating
   const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ return (
           className="bg-white rounded-2xl shadow-md overflow-hidden transition transform hover:-translate-y-1 hover:shadow-lg duration-300"
         >
           <img
-            src={item.image}
+            src={item.thumbnail}
             alt={item.title}
             className="h-48 w-full object-cover"
           />
@@ -73,7 +74,7 @@ return (
               Location: <span className="font-medium">{item.location}</span>
             </p>
             <button
-              onClick={() => navigate(`/items/${item._id}`)}
+              onClick={() => navigate(`/allItems/${item?._id}`)}
               className="mt-2 cursor-pointer inline-block bg-teal-500 text-white px-4 py-1.5 rounded-lg hover:bg-teal-600 transition"
             >
               <i className="fas fa-eye mr-1"></i> View Details

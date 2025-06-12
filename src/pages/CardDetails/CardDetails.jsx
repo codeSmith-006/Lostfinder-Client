@@ -100,7 +100,7 @@ const CardDetails = () => {
 
       {/* Recovered Status */}
       <p className="text-center text-sm font-medium text-gray-700">
-        {isRecoverBool || specificData?.isRecover ? (
+        {specificData?.isRecover || isRecoverBool ? (
           <span className="text-green-600">✅ Recovered</span>
         ) : (
           <span className="text-red-500">❌ Not Recovered</span>
@@ -175,7 +175,7 @@ const CardDetails = () => {
           onClick={() => setModalOpen(true)}
           className="bg-teal-500 hover:bg-teal-600 cursor-pointer transition-all text-white font-semibold py-3 px-6 rounded-full shadow-md"
         >
-          {isRecoverBool || specificData?.isRecover
+          {specificData?.isRecover || isRecoverBool
             ? "Recovered"
             : data?.postType === "lost"
             ? "Found This!"
