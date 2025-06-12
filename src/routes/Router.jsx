@@ -7,7 +7,6 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Error from "../pages/Error/Error";
 import AddItems from "../pages/AddItems/AddItems";
-import SecondaryLayout from "../layouts/SecondaryLayout";
 import AllItems from "../pages/AllItems/AllItems";
 import CardDetails from "../pages/CardDetails/CardDetails";
 import AllRecovered from "../pages/AllRecovered/AllRecovered";

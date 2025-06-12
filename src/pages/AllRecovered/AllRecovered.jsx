@@ -1,5 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Loading from "../../components/Loading/Loading";
 
 const AllRecovered = () => {
   // all recovered data
@@ -18,7 +19,7 @@ const AllRecovered = () => {
         const data = await response.json();
         setAllRecovered(data);
       } catch (error) {
-        console.log("Error when fetching allReovered: ", error);
+        console.log("Error when fetching allRecovered: ", error);
       }
     };
 
