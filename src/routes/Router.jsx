@@ -12,6 +12,7 @@ import AllItems from "../pages/AllItems/AllItems";
 import CardDetails from "../pages/CardDetails/CardDetails";
 import AllRecovered from "../pages/AllRecovered/AllRecovered";
 import MyItems from "../pages/MyItems/MyItems";
+import PrivateRoutes from "./PrivateRoutes";
 
 const Router = createBrowserRouter([
   // main layout routes
@@ -25,7 +26,9 @@ const Router = createBrowserRouter([
       },
       {
         path: "addItems",
-        Component: AddItems,
+        element: <PrivateRoutes>
+          <AddItems></AddItems>
+        </PrivateRoutes>
       },
       {
         path: "allItems",
@@ -35,15 +38,21 @@ const Router = createBrowserRouter([
       {
         path: "allItems/:id",
         loader: ({params}) => fetch(`http://localhost:5000/items/${params.id}`),
-        Component: CardDetails
+        element: <PrivateRoutes>
+          <CardDetails></CardDetails>
+        </PrivateRoutes>
       },
       {
         path: 'recoveredItems',
-        Component: AllRecovered
+        element: <PrivateRoutes>
+          <AllRecovered></AllRecovered>
+        </PrivateRoutes>
       },
       {
         path: 'myItems',
-        Component: MyItems
+        element: <PrivateRoutes>
+          <MyItems></MyItems>
+        </PrivateRoutes>
       }
     ],
   },

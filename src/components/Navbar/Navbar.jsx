@@ -9,6 +9,7 @@ import { Tooltip } from "@mui/material";
 
 const Navbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
+  console.log(currentUser)
 
   const navigate = useNavigation();
   const location = useLocation();

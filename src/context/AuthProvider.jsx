@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../Auth/Firebase/Firebase.config";
 
 const AuthProvider = ({ children }) => {
   const [photoURL, setPhotoURL] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
 
   // create account with email password
   const createAccount = (email, password) => {
@@ -17,31 +21,28 @@ const AuthProvider = ({ children }) => {
   // login account
   const accountLogin = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
-  }
+  };
 
   // handle logout
   const logout = () => {
-    setLoading(false)
+    setLoading(false);
     return signOut(auth);
-  }
+  };
 
   // monitor current user
   useEffect(() => {
-    setLoading(true)
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setLoading(false);
         setPhotoURL(user.photoURL);
-        setCurrentUser(user)
+        setCurrentUser(user);
+        setLoading(false);
+      } else {
+        setCurrentUser(null);
       }
-      else {
-        setCurrentUser(null)
-      }
-    })
-    // setLoading(false)
-    return () => unsubscribe();
-  }, [])
+    });
 
+    return () => unsubscribe();
+  }, []);
 
   const info = {
     loading,
@@ -50,7 +51,7 @@ const AuthProvider = ({ children }) => {
     currentUser,
     logout,
     photoURL,
-    setPhotoURL
+    setPhotoURL,
   };
   return <AuthContext value={info}>{children}</AuthContext>;
 };
