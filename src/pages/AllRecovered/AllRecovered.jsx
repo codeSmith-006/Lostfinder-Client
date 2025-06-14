@@ -1,15 +1,18 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Loading from "../../components/Loading/Loading";
+import useAllRecoveredApi from "../../components/hooks/useAllRecoveredApi";
 
 const AllRecovered = () => {
+  // get myApplicationApi 
+  const {allRecoveredPromise} = useAllRecoveredApi();
+  console.log(allRecoveredPromise)
   // all recovered data
-  const [allRecovered, setAllRecovered] = useState([]);
+  const [usersPost, setUsersPost] = useState([]);
   // all items
   // current user
   const { currentUser } = use(AuthContext);
-  // current user's email
-  const currentUserEmail = currentUser?.email;
+
   // layout
   const [layout, setLayout] = useState("grid");
 
@@ -17,9 +20,8 @@ const AllRecovered = () => {
   useEffect(() => {
     const fetchAllRecovered = async () => {
       try {
-        const response = await fetch("http://localhost:5000/allRecovered");
-        const data = await response.json();
-        setAllRecovered(data);
+        const data = await allRecoveredPromise();
+        setUsersPost(data);
       } catch (error) {
         console.log("Error when fetching allRecovered: ", error);
       }
@@ -29,9 +31,6 @@ const AllRecovered = () => {
     fetchAllRecovered();
   }, []);
 
-  const usersPost = allRecovered.filter(
-    (singleData) => singleData.userEmail == currentUserEmail
-  );
 
   // handle grid icon click
   const handleGrid = () => {

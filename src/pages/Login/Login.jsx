@@ -134,7 +134,7 @@ export default function Login() {
                     placeholder="Password"
                   />
                   <i
-                    className="fas fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer"
+                    className="fas fa-eye-slash absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer"
                     role="button"
                     tabIndex={0}
                   ></i>

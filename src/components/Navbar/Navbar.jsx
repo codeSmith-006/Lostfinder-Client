@@ -127,11 +127,9 @@ const Navbar = () => {
                     scale: 1.1,
                   }}
                   transition={{
-                    duration: 0.2,
                   }}
                   className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
-                >
-                  Login
+                > Login
                 </motion.button>
               </NavLink>
             </div>
