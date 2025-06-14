@@ -1,17 +1,11 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Loading from "../../components/Loading/Loading";
-import useAllRecoveredApi from "../../components/hooks/useAllRecoveredApi";
+import axiosSecure from "../../components/hooks/axiosSecure";
 
 const AllRecovered = () => {
-  // get myApplicationApi 
-  const {allRecoveredPromise} = useAllRecoveredApi();
-  console.log(allRecoveredPromise)
   // all recovered data
   const [usersPost, setUsersPost] = useState([]);
-  // all items
-  // current user
-  const { currentUser } = use(AuthContext);
 
   // layout
   const [layout, setLayout] = useState("grid");
@@ -20,8 +14,8 @@ const AllRecovered = () => {
   useEffect(() => {
     const fetchAllRecovered = async () => {
       try {
-        const data = await allRecoveredPromise();
-        setUsersPost(data);
+        const response = await axiosSecure.get('/allRecovered');
+        setUsersPost(response.data);
       } catch (error) {
         console.log("Error when fetching allRecovered: ", error);
       }
@@ -29,7 +23,10 @@ const AllRecovered = () => {
 
     // calling fetchAllRecovered();
     fetchAllRecovered();
+    
   }, []);
+
+  console.log(usersPost)
 
 
   // handle grid icon click
