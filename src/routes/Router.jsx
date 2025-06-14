@@ -12,6 +12,7 @@ import CardDetails from "../pages/CardDetails/CardDetails";
 import AllRecovered from "../pages/AllRecovered/AllRecovered";
 import MyItems from "../pages/MyItems/MyItems";
 import PrivateRoutes from "./PrivateRoutes";
+import { ItemsDetailsLoader } from "../components/hooks/itemsDetailsLoader";
 
 const Router = createBrowserRouter([
   // main layout routes
@@ -36,7 +37,6 @@ const Router = createBrowserRouter([
       },
       {
         path: "allItems/:id",
-        loader: ({params}) => fetch(`http://localhost:5000/items/${params.id}`),
         element: <PrivateRoutes>
           <CardDetails></CardDetails>
         </PrivateRoutes>

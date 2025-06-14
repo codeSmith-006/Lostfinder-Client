@@ -1,12 +1,14 @@
 import React, { use, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { showToast } from "../../components/Toast/Toast";
+import axiosSecure from "../../components/hooks/axiosSecure";
+import Loading from "../../components/Loading/Loading";
 
 const CardDetails = () => {
-  const { currentUser } = use(AuthContext);
+  const { currentUser, loading } = use(AuthContext);
   const [recoveredItems, setRecoveredItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   // recovery date
@@ -14,22 +16,46 @@ const CardDetails = () => {
   const recoveredDate = recoveryDate.toISOString();
   // isRecovered
   const [isRecoverBool, setIsRecoveredBool] = useState(false);
+  // data
+  const [data, setData] = useState([]);
+  // item id
+  const id = useParams().id;
+  // getting data details
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading || !currentUser || !id) return; // wait until auth is ready
+    console.log("Use effect is running");
+    const fetchData = async (id) => {
+      const response = await axiosSecure.get(`/items/${id}`);
+      const data = await response.data;
+      setData(data);
+    };
+
+    // calling fetchData
+    if (id) {
+      fetchData(id);
+    }
+  }, [id, loading, currentUser]);
+
+  console.log("Data details: ", data);
 
   // fetching allRecovered items data
   useEffect(() => {
-    fetch("http://localhost:5000/allRecovered")
-      .then((response) => response.json())
-      .then((data) => setRecoveredItems(data))
-      .catch((error) =>
-        console.log("Error while fetching allRecovered: ", error)
-      );
+    const fetchData = async () => {
+      try {
+        const response = await axiosSecure.get("/allRecovered");
+        setRecoveredItems(response.data);
+      } catch (error) {
+        console.log("Unauthorized: ", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  console.log("Recovered items: ", recoveredItems[0]);
-
   // getting the data? data
-  const data = useLoaderData();
-  console.log("details data: ", data);
+  console.log("details data id: ", id);
 
   // get the data that i want to check for isRecovered
   const specificData = recoveredItems.find(
@@ -37,9 +63,9 @@ const CardDetails = () => {
   );
 
   console.log("Current date: ", data?.date);
+  if (data.length == 0) return <Loading></Loading>;
 
   // navigate
-  const navigate = useNavigate();
 
   // get modal data
   const handleSubmit = async (event) => {
@@ -78,7 +104,6 @@ const CardDetails = () => {
       console.log("Error while post data to database: ", error);
     }
   };
-
 
 
   return (

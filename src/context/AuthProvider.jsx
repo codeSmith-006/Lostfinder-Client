@@ -7,6 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../Auth/Firebase/Firebase.config";
+import { setAccessToken } from "../components/hooks/axiosSecure";
 
 const AuthProvider = ({ children }) => {
   const [photoURL, setPhotoURL] = useState(null);
@@ -31,8 +32,14 @@ const AuthProvider = ({ children }) => {
 
   // monitor current user
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        const token = await user.getIdToken();
+        if (token) {
+          setAccessToken(token)
+        } else {
+          setAccessToken(null)
+        }
         setPhotoURL(user.photoURL);
         setCurrentUser(user);
         setLoading(false);
@@ -54,7 +61,7 @@ const AuthProvider = ({ children }) => {
     photoURL,
     setPhotoURL,
   };
-  return <AuthContext value={info}>{children}</AuthContext>;
+  return <AuthContext value={info}>{!loading && children}</AuthContext>;
 };
 
 export default AuthProvider;

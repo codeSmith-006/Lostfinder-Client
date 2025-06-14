@@ -4,19 +4,17 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { showToast } from "../../components/Toast/Toast";
+import axiosSecure from "../../components/hooks/axiosSecure";
 
 const MyItems = () => {
   // current user
   const { currentUser } = use(AuthContext);
 
   // getting all items data
-  const [allItems, setAllItems] = useState([]);
-
-  // current user's email
-  const currentUserEmail = currentUser?.email;
+  const [SelectedPost, setSelectedPost] = useState([]);
 
   // const selected for update post
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [updatedPost, setUpdatedPost] = useState(null);
 
   // modal open behave
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -29,9 +27,9 @@ const MyItems = () => {
   useEffect(() => {
     const fetchAllRecovered = async () => {
       try {
-        const response = await fetch("http://localhost:5000/items");
-        const data = await response.json();
-        setAllItems(data);
+        const response = await axiosSecure('/myItems');
+        const data = response.data;
+        setSelectedPost(data);
       } catch (error) {
         console.log("Error when fetching allReovered: ", error);
       }
@@ -40,12 +38,6 @@ const MyItems = () => {
     // calling fetchAllRecovered();
     fetchAllRecovered();
   }, []);
-
-  // getting the users post only
-  const SelectedPost = allItems?.filter(
-    (singleData) => singleData.email == currentUserEmail
-  );
-
 
   // handle delete button
   const handleDelete = async (id) => {
@@ -56,8 +48,8 @@ const MyItems = () => {
     try {
         const response = await axios.delete('http://localhost:5000/items', {data: targetedId});
         if(response.data?.deletedCount) {
-            const dataAfterDelete = allItems.filter(singleData => singleData._id !== id);
-            setAllItems(dataAfterDelete)
+            const dataAfterDelete = SelectedPost.filter(singleData => singleData._id !== id);
+            setSelectedPost(dataAfterDelete)
         }
     } catch (error) {
         console.log("While deleted method from client side: ", error)
@@ -73,7 +65,7 @@ const MyItems = () => {
     const formData = new FormData(form);
     const objectData = Object.fromEntries(formData.entries());
     const updatedData = {
-      recoveredId: selectedPost?._id,
+      recoveredId: updatedPost?._id,
       ...objectData,
       date: selectedDate
     };
@@ -135,7 +127,7 @@ const MyItems = () => {
                     <NavLink>
                       <button
                         onClick={() => {
-                          setSelectedPost(item);
+                          setUpdatedPost(item);
                           setUpdateModalOpen(true);
                         }}
                         className="text-teal-500 cursor-pointer hover:text-teal-700"
@@ -168,7 +160,7 @@ const MyItems = () => {
       )}
 
       {/* Update Modal */}
-      {updateModalOpen && selectedPost && (
+      {updateModalOpen && updatedPost && (
         <dialog open className="modal modal-bottom sm:modal-middle">
           <div className="modal-box rounded-2xl space-y-4 p-6">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
@@ -187,7 +179,7 @@ const MyItems = () => {
                   name="postType"
                   className="select select-bordered w-full"
                   required
-                  defaultValue={selectedPost?.postType}
+                  defaultValue={updatedPost?.postType}
                 >
                   <option value="">Select Type</option>
                   <option value="lost">Lost</option>
@@ -206,7 +198,7 @@ const MyItems = () => {
                   name="thumbnail"
                   className="input input-bordered w-full"
                   required
-                  defaultValue={selectedPost?.thumbnail}
+                  defaultValue={updatedPost?.thumbnail}
                 />
               </div>
 
@@ -220,7 +212,7 @@ const MyItems = () => {
                   name="title"
                   className="input input-bordered w-full"
                   required
-                  defaultValue={selectedPost?.title}
+                  defaultValue={updatedPost?.title}
                 />
               </div>
 
@@ -235,7 +227,7 @@ const MyItems = () => {
                   className="textarea textarea-bordered w-full"
                   rows={3}
                   required
-                  defaultValue={selectedPost?.description}
+                  defaultValue={updatedPost?.description}
                 ></textarea>
               </div>
 
@@ -248,7 +240,7 @@ const MyItems = () => {
                 <select
                   name="category"
                   required
-                  defaultValue={selectedPost?.category || ""}
+                  defaultValue={updatedPost?.category || ""}
                   className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-teal-500"
                 >
                   <option value="">Select Category</option>
@@ -270,7 +262,7 @@ const MyItems = () => {
                   name="location"
                   className="input input-bordered w-full"
                   required
-                  defaultValue={selectedPost?.location}
+                  defaultValue={updatedPost?.location}
                 />
               </div>
 

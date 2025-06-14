@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import logo from "../../assets/LostFinder logo.png";
 import { NavLink, useLocation, useNavigation } from "react-router-dom";
 import * as motion from "motion/react-client";
@@ -9,16 +9,30 @@ import { Tooltip } from "@mui/material";
 
 const Navbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
-  console.log(currentUser)
+  
+  // scroll animation
+  const [scroll, setScroll] = useState(false);
+
+  // handle scroll 
+  useEffect(() => {
+     const handleScroll = () => {
+      setScroll(window.scrollY > 30)
+     }
+
+     window.addEventListener('scroll', handleScroll);
+     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  console.log("Scroll", scroll)
 
   const navigate = useNavigation();
   const location = useLocation();
 
   // conditional bag
   const bg =
-    location.pathname === "/"
+    !location.pathname === "/"
       ? "bg-transparent"
-      : "bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)]";
+      : 'bg-transparent';
 
   // handle logout button
   const handleLogout = () => {
@@ -32,9 +46,7 @@ const Navbar = () => {
   return (
     <div className="">
       <div
-        className={`navbar ${bg} flex justify-between ${
-          location.pathname === "/" ? "absolute" : ""
-        } z-40 px-5 py-5 md:py-7`}
+        className={`navbar absolute bg-transparent shadow-[0_0_30px_rgba(0,0,0,0.1)]  flex justify-between  z-40 px-5 py-5 md:py-7 ${scroll ? 'fixed transition-all duration-300 backdrop-blur-md ' : ''}`}
       >
         {/* logo section */}
         <div className="flex items-center gap-4">
@@ -126,10 +138,11 @@ const Navbar = () => {
                   whileHover={{
                     scale: 1.1,
                   }}
-                  transition={{
-                  }}
+                  transition={{}}
                   className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
-                > Login
+                >
+                  {" "}
+                  Login
                 </motion.button>
               </NavLink>
             </div>

@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 
 const PrivateRoutes = ({ children }) => {
   const { currentUser, loading } = use(AuthContext);
-  console.log("Current user: ", currentUser)
+  // console.log("Current user: ", currentUser)
   if (loading) {
     return <Loading></Loading>
   }
