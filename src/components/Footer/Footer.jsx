@@ -7,7 +7,7 @@ const Footer = () => {
         
         {/* Branding */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-2xl font-bold text-primary">LostFinder</h2>
+          <h2 className="text-2xl font-bold text-teal-400">LostFinder</h2>
           <p className="mt-2 text-sm">
             Helping you reconnect with your lost items — safely and easily.
           </p>

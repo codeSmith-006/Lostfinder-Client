@@ -9,30 +9,27 @@ import { Tooltip } from "@mui/material";
 
 const Navbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
-  
+
   // scroll animation
   const [scroll, setScroll] = useState(false);
 
-  // handle scroll 
+  // handle scroll
   useEffect(() => {
-     const handleScroll = () => {
-      setScroll(window.scrollY > 30)
-     }
+    const handleScroll = () => {
+      setScroll(window.scrollY > 30);
+    };
 
-     window.addEventListener('scroll', handleScroll);
-     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  console.log("Scroll", scroll)
+  console.log("Scroll", scroll);
 
   const navigate = useNavigation();
   const location = useLocation();
 
   // conditional bag
-  const bg =
-    !location.pathname === "/"
-      ? "bg-transparent"
-      : 'bg-transparent';
+  const bg = !location.pathname === "/" ? "bg-transparent" : "bg-transparent";
 
   // handle logout button
   const handleLogout = () => {
@@ -46,7 +43,9 @@ const Navbar = () => {
   return (
     <div className="">
       <div
-        className={`navbar absolute bg-transparent shadow-[0_0_30px_rgba(0,0,0,0.1)]  flex justify-between  z-40 px-5 py-5 md:py-7 ${scroll ? 'fixed transition-all duration-300 backdrop-blur-md ' : ''}`}
+        className={`navbar absolute bg-transparent shadow-[0_0_30px_rgba(0,0,0,0.1)]  flex justify-between  z-40 px-5 py-5 md:py-7 ${
+          scroll ? "fixed transition-all duration-300 backdrop-blur-md " : ""
+        }`}
       >
         {/* logo section */}
         <div className="flex items-center gap-4">
@@ -71,17 +70,16 @@ const Navbar = () => {
             <div className="flex items-center gap-2">
               <motion.button
                 onClick={handleLogout}
-                whileHover={{
-                  scale: 1.1,
-                }}
-                transition={{
-                  duration: 0.2,
-                }}
-                className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ duration: 0 }}
+                className="px-6 py-2 cursor-pointer rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 flex items-center gap-2"
               >
+                <i className="fas fa-sign-out-alt"></i>
                 Logout
               </motion.button>
-              <motion.div whileHover={{ scale: 1.1 }} className="flex">
+
+              <motion.div whileHover={{ scale: 1.01 }} className="flex">
                 <div className="dropdown dropdown-end">
                   <div
                     tabIndex={0}
@@ -96,36 +94,51 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                    className="menu menu-sm dropdown-content backdrop-blur-md bg-gray-900/80 border border-gray-600 rounded-xl z-50 mt-3 w-60 p-2 shadow-lg text-gray-200"
                   >
                     <li>
                       <NavLink
                         to="/"
-                        className="hidden md:flex justify-between"
+                        className="hidden md:flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
                       >
-                        Home
+                        <i className="fas fa-home text-teal-400 mr-2"></i> Home
                       </NavLink>
                     </li>
                     <li>
                       <NavLink
                         to="/allItems"
-                        className="hidden md:flex justify-between"
+                        className="hidden md:flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
                       >
-                        Lost & Found Items
+                        <i className="fas fa-boxes text-teal-400 mr-2"></i> Lost
+                        & Found Items
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/addItems" className="justify-between">
+                      <NavLink
+                        to="/addItems"
+                        className="flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
+                      >
+                        <i className="fas fa-plus-circle text-teal-400 mr-2"></i>{" "}
                         Add Lost & Found Item
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/recoveredItems">
+                      <NavLink
+                        to="/recoveredItems"
+                        className="flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
+                      >
+                        <i className="fas fa-check-circle text-teal-400 mr-2"></i>{" "}
                         All Recovered Items
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/myItems">Manage My Items</NavLink>
+                      <NavLink
+                        to="/myItems"
+                        className="flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
+                      >
+                        <i className="fas fa-user-cog text-teal-400 mr-2"></i>{" "}
+                        Manage My Items
+                      </NavLink>
                     </li>
                   </ul>
                 </div>
@@ -135,13 +148,12 @@ const Navbar = () => {
             <div className="">
               <NavLink to="/login">
                 <motion.button
-                  whileHover={{
-                    scale: 1.1,
-                  }}
-                  transition={{}}
-                  className={`px-4 py-2 cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg`}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0 }}
+                  className="px-6 cursor-pointer py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                 >
-                  {" "}
+                  <i className="fas fa-sign-in-alt"></i>
                   Login
                 </motion.button>
               </NavLink>

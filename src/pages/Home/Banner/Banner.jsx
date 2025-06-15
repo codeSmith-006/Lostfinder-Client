@@ -60,12 +60,14 @@ const SlideHero = ({ slide }) => (
 
     {/* Content */}
     <motion.div
-      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl text-white"
+      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl p-8 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 text-white shadow-lg"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <h2 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-lg">
+      <h2
+        className="text-3xl sm:text-5xl font-bold leading-tight"
+      >
         {slide.title}
       </h2>
       <p className="mt-3 text-base sm:text-lg drop-shadow-md">
@@ -74,12 +76,16 @@ const SlideHero = ({ slide }) => (
       <Link to={slide.buttonLink}>
         <motion.button
           whileHover={{
-            scale: 1.1,
+            scale: 1.01,
+            boxShadow: "0 0 15px rgba(14, 165, 233, 0.8)",
           }}
-          transition={{
-            duration: 0,
+          transition={{ duration: 0 }}
+          className="mt-6 cursor-pointer px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold rounded shadow-md hover:shadow-cyan-400/60 transition-all duration-500"
+          style={{
+            backgroundSize: "200% 200%",
+            backgroundPosition: "0% 50%",
+            animation: "gradientShift 4s ease infinite",
           }}
-          className="mt-6 px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded shadow-lg transition-all duration-300"
         >
           {slide.buttonText}
         </motion.button>

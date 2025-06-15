@@ -6,7 +6,7 @@ import './active.css'
 const AnimatedLink = ({to, children}) => {
     return (
         <motion.div className='relative' whileHover='hover' initial='rest' animate='rest'>
-            <NavLink to={to} className='text-white  text-lg'>
+            <NavLink to={to} className='text-white hover:text-gray-300 text-lg'>
                 {children}
             </NavLink>
             <motion.span className='absolute left-0 bottom-0 h-[2px] bg-[#6ABCE7]' variants={{

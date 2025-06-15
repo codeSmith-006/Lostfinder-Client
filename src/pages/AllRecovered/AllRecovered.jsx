@@ -14,7 +14,7 @@ const AllRecovered = () => {
   useEffect(() => {
     const fetchAllRecovered = async () => {
       try {
-        const response = await axiosSecure.get('/allRecovered');
+        const response = await axiosSecure.get("/allRecovered");
         setUsersPost(response.data);
       } catch (error) {
         console.log("Error when fetching allRecovered: ", error);
@@ -23,11 +23,9 @@ const AllRecovered = () => {
 
     // calling fetchAllRecovered();
     fetchAllRecovered();
-    
   }, []);
 
-  console.log(usersPost)
-
+  console.log(usersPost);
 
   // handle grid icon click
   const handleGrid = () => {
@@ -46,9 +44,11 @@ const AllRecovered = () => {
     setLayout(localLayout);
   }, []);
 
+  console.log("Layout: ", layout)
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg text-gray-800 space-y-6">
-      <h2 className="text-3xl font-semibold text-center text-teal-600 mb-6">
+    <div className="max-w-4xl mx-auto p-6 backdrop-blur-md bg-transparent rounded-2xl shadow-lg text-gray-200 space-y-6">
+      <h2 className="text-3xl font-semibold text-center text-cyan-400 mb-6">
         My Recovered Items
       </h2>
 
@@ -56,30 +56,30 @@ const AllRecovered = () => {
       <div className="flex justify-end items-center gap-4 -mt-4 mb-2 pr-2">
         <button
           onClick={handleGrid}
-          className={`text-gray-500 ${
-            layout == "grid" ? "text-teal-500" : ""
-          } hover:text-teal-500 transition text-xl`}
+          className={`text-gray-300 ${
+            layout === "grid" ? "text-cyan-400" : ""
+          } hover:text-cyan-400 transition text-xl`}
           title="Grid View"
         >
           <i className="fas fa-th"></i>
         </button>
         <button
           onClick={handleTable}
-          className={`text-gray-500 ${
-            layout == "table" ? "text-teal-500" : ""
-          } hover:text-teal-500 transition text-xl`}
+          className={ ` ${
+            layout === "table" ? "text-cyan-400" : ""
+          } text-gray-300  hover:text-cyan-400 transition text-xl`}
           title="Table View"
         >
           <i className="fas fa-table"></i>
         </button>
       </div>
 
-      {/* according to layout */}
+      {/* layout views */}
       {layout == "table" ? (
         usersPost?.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
-              <thead className="bg-teal-50 text-teal-700">
+            <table className="min-w-full bg-transparent border border-gray-700 rounded-xl shadow-md">
+              <thead className="bg-cyan-900 text-cyan-300">
                 <tr>
                   <th className="py-3 px-4 text-left text-sm font-semibold">
                     Title
@@ -99,18 +99,18 @@ const AllRecovered = () => {
                 {usersPost.map((item, index) => (
                   <tr
                     key={item.id || index}
-                    className="hover:bg-teal-50 transition-colors border-t"
+                    className="hover:bg-cyan-950 transition-colors border-t border-gray-700"
                   >
-                    <td className="py-3 px-4 text-gray-800 font-medium">
+                    <td className="py-3 px-4 text-gray-100 font-medium">
                       {item.recoveredTitle}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 text-gray-400">
                       {item.recoveredCategory}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 text-gray-400">
                       {item.recoveredLocation}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 text-gray-400">
                       {new Date(item.recoveredDate).toLocaleDateString(
                         "en-US",
                         {
@@ -126,8 +126,8 @@ const AllRecovered = () => {
             </table>
           </div>
         ) : (
-          <div className="text-center py-12 text-gray-500">
-            <i className="fas fa-box-open text-4xl text-teal-300 mb-4"></i>
+          <div className="text-center py-12 text-gray-400">
+            <i className="fas fa-box-open text-4xl text-cyan-500 mb-4"></i>
             <p className="text-lg font-medium">
               You haven’t recovered any items yet.
             </p>
@@ -141,25 +141,31 @@ const AllRecovered = () => {
           {usersPost.map((item, index) => (
             <div
               key={item.id || index}
-              className="bg-white rounded-xl shadow-md p-4 space-y-2 hover:shadow-lg transition duration-300"
+              className="bg-transparent border-gray-600 shadow-lg text-gray-100 rounded-xl p-4 space-y-2 hover:shadow-lg hover:bg-white/20 transition duration-300"
             >
-              <h3 className="text-lg font-semibold text-teal-600">
-                <i className="fas fa-tag mr-2 text-teal-400"></i>
+              <h3 className="text-lg font-semibold text-cyan-400">
+                <i className="fas fa-tag mr-2 text-cyan-300"></i>
                 {item.recoveredTitle}
               </h3>
-              <p className="text-sm text-gray-600">
-                <i className="fas fa-layer-group mr-1 text-teal-400"></i>
-                <span className="font-medium">Category:</span>{" "}
+              <p className="text-sm text-gray-300">
+                <i className="fas fa-layer-group mr-1 text-cyan-300"></i>
+                <span className="font-medium text-white">
+                  Category:
+                </span>{" "}
                 {item.recoveredCategory}
               </p>
-              <p className="text-sm text-gray-600">
-                <i className="fas fa-map-marker-alt mr-1 text-teal-400"></i>
-                <span className="font-medium">Location:</span>{" "}
+              <p className="text-sm text-gray-300">
+                <i className="fas fa-map-marker-alt mr-1 text-cyan-300"></i>
+                <span className="font-medium text-white">
+                  Location:
+                </span>{" "}
                 {item.recoveredLocation}
               </p>
-              <p className="text-sm text-gray-600">
-                <i className="fas fa-calendar-day mr-1 text-teal-400"></i>
-                <span className="font-medium">Recovered On:</span>{" "}
+              <p className="text-sm text-gray-300">
+                <i className="fas fa-calendar-day mr-1 text-cyan-300"></i>
+                <span className="font-medium text-white">
+                  Recovered On:
+                </span>{" "}
                 {new Date(item.recoveredDate).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
@@ -170,8 +176,8 @@ const AllRecovered = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 text-gray-500">
-          <i className="fas fa-box-open text-4xl text-teal-300 mb-4"></i>
+        <div className="text-center py-12 text-gray-400">
+          <i className="fas fa-box-open text-4xl text-cyan-500 mb-4"></i>
           <p className="text-lg font-medium">
             You haven’t recovered any items yet.
           </p>

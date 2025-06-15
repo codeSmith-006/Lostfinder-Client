@@ -44,7 +44,7 @@ export default function Login() {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       if (userCredential?.user) {
-        navigate("/")
+        navigate("/");
         showToast("success", "Signed in successfully");
       }
     } catch (error) {
@@ -142,14 +142,11 @@ export default function Login() {
               </div>
 
               <motion.button
-                whileHover={{
-                  scale: 1.02,
-                }}
-                transition={{
-                  duration: 0.2,
-                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ duration: 0.1 }}
                 type="submit"
-                className="w-full cursor-pointer bg-blue-500 text-white text-sm font-semibold rounded-full py-3 hover:bg-blue-600"
+                className="w-full cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-700 text-white text-sm font-semibold rounded-full py-3 shadow-md shadow-cyan-400/20 hover:shadow-lg hover:brightness-110 transition duration-300"
               >
                 Login
               </motion.button>
@@ -158,14 +155,11 @@ export default function Login() {
 
               <motion.button
                 onClick={handleGoogleLogin}
-                whileHover={{
-                  scale: 1.02,
-                }}
-                transition={{
-                  duration: 0.2,
-                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.1 }}
                 type="button"
-                className="w-full cursor-pointer flex items-center justify-center gap-3 bg-white text-gray-800 text-sm font-semibold rounded-full py-3 hover:bg-gray-100"
+                className="w-full cursor-pointer flex items-center justify-center gap-3 bg-white text-gray-800 text-sm font-semibold rounded-full py-3 shadow-md hover:shadow-lg hover:bg-gray-100 border border-gray-200 transition-all duration-300"
               >
                 <FcGoogle className="text-xl" />
                 Continue with Google

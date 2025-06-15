@@ -36,63 +36,70 @@ const LatestsortedData = () => {
 
   return (
     <div className="mt-12 pb-5 px-5">
-      <h2 className="text-2xl font-bold text-gray-300 hover:text-white transition-color duration-300  mb-6 text-center">
+      <h2 className="text-2xl font-bold text-teal-400 hover:text-gray-200 transition-colors duration-300 mb-8 text-center">
         <i className="fas fa-box-open text-teal-500 mr-2"></i>
         Latest Find & Lost Items
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {sortedData.map((item) => (
-            <div
-              key={item._id}
-              className="bg-transparent backdrop-blur-md  rounded-2xl shadow-md overflow-hidden transition transform hover:-translate-y-1 hover:shadow-lg duration-300"
-            >
-              <img
-                src={item.thumbnail}
-                alt={item.title}
-                className="h-48 w-full object-cover"
-              />
-              <div className="p-4 space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  <i className="fas fa-tag text-teal-500 mr-1"></i>
-                  {item.title}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  <i className="fas fa-calendar-alt text-teal-400 mr-1"></i>
-                  Date:{" "}
-                  <span className="font-medium">
-                    {item.date
-                      ? new Date(item.date).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "N/A"}
-                  </span>
-                </p>
-                <p className="text-sm text-gray-600">
-                  <i className="fas fa-map-marker-alt text-teal-400 mr-1"></i>
-                  Location: <span className="font-medium">{item.location}</span>
-                </p>
+          <div
+            key={item._id}
+            className="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-lg shadow-xl transition-all duration-300 hover:shadow-2xl hover:ring-2 hover:ring-teal-400/50"
+          >
+            {/* Thumbnail */}
+            <img
+              src={item.thumbnail}
+              alt={item.title}
+              className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+
+            {/* Content */}
+            <div className="p-5 space-y-3">
+              <h3 className="text-xl font-semibold text-white">
+                <i className="fas fa-tag text-teal-300 mr-2"></i>
+                {item.title}
+              </h3>
+
+              <p className="text-sm text-gray-300">
+                <i className="fas fa-calendar-alt text-teal-200 mr-2"></i>
+                <span className="font-medium text-white">
+                  {item.date
+                    ? new Date(item.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : "N/A"}
+                </span>
+              </p>
+
+              <p className="text-sm text-gray-300">
+                <i className="fas fa-map-marker-alt text-teal-200 mr-2"></i>
+                <span className="font-medium text-white">{item.location}</span>
+              </p>
+
+              <div className="pt-2">
                 <button
                   onClick={() => navigate(`/allItems/${item?._id}`)}
-                  className="mt-2 cursor-pointer inline-block bg-teal-500 text-white px-4 py-1.5 rounded-lg hover:bg-teal-600 transition"
+                  className="w-full cursor-pointer inline-block bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-600 hover:to-blue-800 transition-colors text-white font-medium py-2 rounded-xl text-sm shadow"
                 >
                   <i className="fas fa-eye mr-1"></i> View Details
                 </button>
               </div>
             </div>
-
+          </div>
         ))}
       </div>
 
       {/* See All Button */}
-      <div className="text-center mt-8">
+      <div className="text-center mt-12">
         <button
           onClick={() => navigate("/allItems")}
-          className="bg-teal-500 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition"
+          className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-white font-semibold bg-gradient-to-r cursor-pointer from-teal-400 via-cyan-500 to-blue-500 shadow-md shadow-cyan-500/30 hover:shadow-xl hover:brightness-110 transition-all duration-300 ease-in-out"
         >
-          <i className="fas fa-arrow-right mr-1"></i> See All
+          <i className="fas fa-arrow-right animate-pulse"></i>
+          See All
         </button>
       </div>
     </div>

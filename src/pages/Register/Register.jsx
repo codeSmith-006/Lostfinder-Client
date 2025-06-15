@@ -10,8 +10,8 @@ import { auth } from "../../Auth/Firebase/Firebase.config";
 
 export default function Register() {
   const [passwordError, setPasswordError] = useState("");
-  const {createAccount, setPhotoURL, loggedUser} = use(AuthContext);
-  const [error, setError] = useState('')
+  const { createAccount, setPhotoURL, loggedUser } = use(AuthContext);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -19,13 +19,14 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
-    
+
     const name = form.name.value;
     const photoURL = form.photoURL.value;
     const profile = {
-      displayName: name, photoURL: photoURL
-    }
-    console.log(updateProfile)
+      displayName: name,
+      photoURL: photoURL,
+    };
+    console.log(updateProfile);
     const email = form.email.value;
     const password = form.password.value.trim();
 
@@ -43,29 +44,27 @@ export default function Register() {
 
     setPasswordError("");
 
-
     // create user
     try {
       const userCredential = await createAccount(email, password);
-      if(userCredential?.user) {
+      if (userCredential?.user) {
         // updating the photo url
         setPhotoURL(photoURL);
-        navigate("/")
+        navigate("/");
         // updating the profile with name and photo url
         updateProfile(auth.currentUser, profile)
-        .then(() => {
-          // profile updated!
-        })
-        .catch(error => console.log(error))
+          .then(() => {
+            // profile updated!
+          })
+          .catch((error) => console.log(error));
 
         // show alert for user creation
-        showToast("success", "Account created successfully!")
+        showToast("success", "Account created successfully!");
       }
-    } catch(err) {
+    } catch (err) {
       setError(err);
-      showToast('error', `${error}`)
+      showToast("error", `${error}`);
     }
-
   };
 
   return (
@@ -157,7 +156,7 @@ export default function Register() {
                   <input
                     name="password"
                     type="password"
-                    value='123@Rr'
+                    value="123@Rr"
                     required
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg"
                     placeholder="Password"
@@ -173,14 +172,11 @@ export default function Register() {
               </div>
 
               <motion.button
-                whileHover={{
-                  scale: 1.02,
-                }}
-                transition={{
-                  duration: 0.2,
-                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ duration: 0.1 }}
                 type="submit"
-                className="w-full cursor-pointer bg-blue-500 text-white text-sm font-semibold rounded-full py-3 hover:bg-blue-600"
+                className="w-full cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-700 text-white text-sm font-semibold rounded-full py-3 shadow-md shadow-cyan-400/20 hover:shadow-lg hover:brightness-110 transition duration-300"
               >
                 Register
               </motion.button>
