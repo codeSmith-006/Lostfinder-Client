@@ -17,9 +17,7 @@ const MainLayout = () => {
         className={`bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)] ${conditionalPadding}`}
       >
         <Outlet></Outlet>
-        <Testimonial></Testimonial>
       </div>
-      
       <Footer></Footer>
     </div>
   );
