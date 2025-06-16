@@ -13,6 +13,9 @@ export default function Login() {
   const { accountLogin } = use(AuthContext);
   const [error, setError] = useState("");
 
+  // show password
+  const [isVisible, setIsVisible] = useState(false);
+
   // navigation
   const navigate = useNavigate();
 
@@ -129,12 +132,12 @@ export default function Login() {
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={`${!isVisible ? 'password' : 'text'}`}
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg"
                     placeholder="Password"
                   />
-                  <i
-                    className="fas fa-eye-slash absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer"
+                  <i onClick={() => setIsVisible(!isVisible)}
+                    className={`fas ${isVisible ? 'fa-eye' : 'fa-eye-slash'} absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer`}
                     role="button"
                     tabIndex={0}
                   ></i>

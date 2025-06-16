@@ -13,6 +13,9 @@ export default function Register() {
   const { createAccount, setPhotoURL, loggedUser } = use(AuthContext);
   const [error, setError] = useState("");
 
+  // password view
+  const [isVisible, setIsVisible] = useState(false)
+
   const navigate = useNavigate();
 
   // handle register button submit
@@ -155,15 +158,15 @@ export default function Register() {
                 <div className="relative rounded-lg border border-[#2F8FFF]">
                   <input
                     name="password"
-                    type="password"
-                    value="123@Rr"
+                    type={`${!isVisible ? 'password' : 'text'}`}
                     required
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg"
                     placeholder="Password"
                   />
-                  <i
-                    className="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B]"
+                  <i onClick={() => setIsVisible(!isVisible)}
+                    className={`fas ${isVisible ? 'fa-eye' : 'fa-eye-slash'} absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer`}
                     role="button"
+                    tabIndex={0}
                   ></i>
                 </div>
                 {passwordError && (
