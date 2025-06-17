@@ -61,7 +61,7 @@ const SlideHero = ({ slide }) => (
 
     {/* Content */}
     <motion.div
-      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl p-8 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 text-white shadow-lg"
+      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl p-8 md:bg-white/10 md:backdrop-blur-sm rounded-lg md:border md:border-white/30 text-white md:shadow-lg"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
@@ -94,7 +94,7 @@ const SlideHero = ({ slide }) => (
     </motion.div>
 
     {/* bouncing arrow */}
-    <div className="z-40 absolute right-12 bottom-24 " >
+    <div className="z-40 absolute bottom-12 right-6 md:right-12 md:bottom-24 " >
       <BouncingArrow></BouncingArrow>
     </div>
   </div>

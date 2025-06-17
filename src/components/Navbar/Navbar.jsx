@@ -73,7 +73,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ duration: 0 }}
-                className="px-6 py-2 cursor-pointer rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                className="px-6 hidden py-2 cursor-pointer rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 md:flex items-center gap-2"
               >
                 <i className="fas fa-sign-out-alt"></i>
                 Logout
@@ -99,7 +99,7 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/"
-                        className="hidden md:flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
+                        className="md:flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
                       >
                         <i className="fas fa-home text-teal-400 mr-2"></i> Home
                       </NavLink>
@@ -139,6 +139,13 @@ const Navbar = () => {
                         <i className="fas fa-user-cog text-teal-400 mr-2"></i>{" "}
                         Manage My Items
                       </NavLink>
+                    </li>
+                    <li
+                      onClick={handleLogout}
+                      className="flex flex-row items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg py-2 transition"
+                    >
+                      <i className="fas fa-sign-out-alt text-teal-400 text-lg"></i>
+                      <span className="font-medium">Logout</span>
                     </li>
                   </ul>
                 </div>
