@@ -32,7 +32,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "allItems",
-        loader: () => fetch("http://localhost:5000/items"),
+        loader: () => fetch("https://lostfinder-server.vercel.app/items"),
         Component: AllItems,
       },
       {

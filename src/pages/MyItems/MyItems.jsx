@@ -57,7 +57,7 @@ const MyItems = () => {
     };
     console.log("targeted id: ", targetedId);
     try {
-      const response = await axios.delete("http://localhost:5000/items", {
+      const response = await axios.delete("https://lostfinder-server.vercel.app/items", {
         data: targetedId,
       });
       if (response.data?.deletedCount) {
@@ -65,6 +65,7 @@ const MyItems = () => {
           (singleData) => singleData._id !== id
         );
         setSelectedPost(dataAfterDelete);
+        showToast('success', 'Item deleted successfully')
       }
     } catch (error) {
       console.log("While deleted method from client side: ", error);
@@ -89,7 +90,7 @@ const MyItems = () => {
     // sending data to backend
     try {
       const response = await axios.patch(
-        "http://localhost:5000/items",
+        "https://lostfinder-server.vercel.app/items",
         updatedData
       );
       console.log(response.data);
@@ -209,9 +210,9 @@ const MyItems = () => {
                 required
                 defaultValue={updatedPost?.postType}
               >
-                <option value="">Select Type</option>
-                <option value="lost">Lost</option>
-                <option value="found">Found</option>
+                <option className="text-gray-600" value="">Select Type</option>
+                <option className="text-gray-600" value="lost">Lost</option>
+                <option className="text-gray-600" value="found">Found</option>
               </select>
             </div>
 
@@ -270,11 +271,11 @@ const MyItems = () => {
                 defaultValue={updatedPost?.category || ""}
                 className="w-full bg-white/10 text-white border border-white/30 rounded-lg px-4 py-2 focus:outline-none"
               >
-                <option value="">Select Category</option>
-                <option value="pets">Pets</option>
-                <option value="documents">Documents</option>
-                <option value="gadgets">Gadgets</option>
-                <option value="others">Others</option>
+                <option className="text-gray-600" value="">Select Category</option>
+                <option className="text-gray-600" value="pets">Pets</option>
+                <option className="text-gray-600" value="documents">Documents</option>
+                <option className="text-gray-600" value="gadgets">Gadgets</option>
+                <option className="text-gray-600" value="others">Others</option>
               </select>
             </div>
 
@@ -348,7 +349,7 @@ const MyItems = () => {
             {/* Modal Actions */}
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn btn-ghost text-white">Cancel</button>
+                <button className="btn btn-error">Cancel</button>
               </form>
               <input
                 type="submit"

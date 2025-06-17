@@ -93,7 +93,7 @@ const CardDetails = () => {
     // posting recovered items data from client side to server
     try {
       const response = await axios.post(
-        "http://localhost:5000/allRecovered",
+        "https://lostfinder-server.vercel.app/allRecovered",
         formData
       );
       if (response.data?.insertedId) {

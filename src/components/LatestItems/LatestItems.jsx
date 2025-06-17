@@ -18,7 +18,7 @@ const LatestsortedData = () => {
   useEffect(() => {
     const fetchedData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/latestItems");
+        const response = await axios.get("https://lostfinder-server.vercel.app/latestItems");
         setSortedData(response.data);
         setLoading(false);
         console.log(response.data);
@@ -29,6 +29,8 @@ const LatestsortedData = () => {
 
     fetchedData();
   }, []);
+
+  console.log(sortedData[0]?.thumbnail)
 
   if (loading) {
     return <Loading></Loading>;

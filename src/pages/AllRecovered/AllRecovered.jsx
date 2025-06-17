@@ -101,7 +101,7 @@ const AllRecovered = () => {
         <button
           onClick={handleGrid}
           className={`text-gray-300 ${
-            layout === "grid" ? "text-cyan-400" : ""
+            layout == "grid" ? "text-cyan-400" : ""
           } hover:text-cyan-400 transition text-xl`}
           title="Grid View"
         >
@@ -110,7 +110,7 @@ const AllRecovered = () => {
         <button
           onClick={handleTable}
           className={`${
-            layout === "table" ? "text-cyan-400" : ""
+            layout == "table" ? "text-cyan-400" : ""
           } text-gray-300 hover:text-cyan-400 transition text-xl`}
           title="Table View"
         >

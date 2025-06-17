@@ -24,7 +24,7 @@ const AddItems = () => {
     console.log(data);
 
     try {
-      const response = await axios.post("http://localhost:5000/items", data);
+      const response = await axios.post("https://lostfinder-server.vercel.app/items", data);
       if (response.data?.insertedId) {
         showToast("success", "Item added successfully");
         form.reset();

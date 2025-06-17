@@ -28,9 +28,6 @@ const Navbar = () => {
   const navigate = useNavigation();
   const location = useLocation();
 
-  // conditional bag
-  const bg = !location.pathname === "/" ? "bg-transparent" : "bg-transparent";
-
   // handle logout button
   const handleLogout = () => {
     logout()
@@ -107,7 +104,7 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/allItems"
-                        className="hidden md:flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
+                        className="flex items-center justify-between hover:bg-gray-800 hover:text-white rounded-lg px-3 py-2 transition"
                       >
                         <i className="fas fa-boxes text-teal-400 mr-2"></i> Lost
                         & Found Items

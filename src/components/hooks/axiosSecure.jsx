@@ -4,7 +4,7 @@ import { showToast } from "../Toast/Toast";
 
 // creating axios secure instance
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://lostfinder-server.vercel.app/",
 });
 
 // access token
