@@ -34,7 +34,7 @@ const Testimonial = () => {
       quote:
         "I thought I’d never see my wallet again. Thanks to this amazing platform, I got it back within a day. Truly life-saving!",
       date: "May 21, 2025",
-      avatar: "https://i.ibb.co/ZYW3VTp/brown-brim.png",
+      avatar: "https://i.ibb.co/B5PrJ7MR/male-2.jpg",
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ const Testimonial = () => {
       quote:
         "Someone found my ID card and returned it the next day. The process was smooth and felt secure.",
       date: "April 12, 2025",
-      avatar: "https://i.ibb.co/yY8TqG6/user1.jpg",
+      avatar: "https://i.ibb.co/8nXq8p7x/female-4.jpg",
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ const Testimonial = () => {
       quote:
         "Can’t believe someone found my headphones and returned them! Super thankful for this platform.",
       date: "March 30, 2025",
-      avatar: "https://i.ibb.co/JyCwxdv/user2.jpg",
+      avatar: "https://i.ibb.co/G4z1Txwg/male-1.webp",
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ const Testimonial = () => {
       quote:
         "I was panicking about my lost passport, but someone returned it through this app. Unbelievable!",
       date: "March 15, 2025",
-      avatar: "https://i.ibb.co/LNQZzZ1/user3.jpg",
+      avatar: "https://i.ibb.co/fJmnftr/female-5.webp",
     },
     {
       id: 5,
@@ -70,7 +70,7 @@ const Testimonial = () => {
       quote:
         "This platform really works. I got my lost backpack back within 3 days. Hats off to the team!",
       date: "May 02, 2025",
-      avatar: "https://i.ibb.co/M6Z8H8p/user4.jpg",
+      avatar: "https://i.ibb.co/4ng8D5Rf/male-5.jpg",
     },
     {
       id: 6,
@@ -79,7 +79,7 @@ const Testimonial = () => {
       quote:
         "Lost it in a coffee shop and thought it was gone forever. Got it back through this community. Amazing!",
       date: "April 08, 2025",
-      avatar: "https://i.ibb.co/gR8MXD4/user5.jpg",
+      avatar: "https://i.ibb.co/p6dzD9Cg/female-2.webp",
     },
     {
       id: 7,
@@ -88,7 +88,7 @@ const Testimonial = () => {
       quote:
         "Never expected my lost laptop to return, but someone actually found it and contacted me through here!",
       date: "March 28, 2025",
-      avatar: "https://i.ibb.co/DkzXJrk/user6.jpg",
+      avatar: "https://i.ibb.co/NdkF0MDk/male-3.jpg",
     },
     {
       id: 8,
@@ -97,7 +97,7 @@ const Testimonial = () => {
       quote:
         "Lost a small jewelry box during a trip. Was shocked when someone posted about finding it. Thank you!",
       date: "May 10, 2025",
-      avatar: "https://i.ibb.co/Fb1Xzbn/user7.jpg",
+      avatar: "https://i.ibb.co/V8x3St1/female-3.jpg",
     },
     {
       id: 9,
@@ -106,7 +106,7 @@ const Testimonial = () => {
       quote:
         "Recovered my NID card just in time for an important document process. Super grateful!",
       date: "April 20, 2025",
-      avatar: "https://i.ibb.co/dP9KzvX/user8.jpg",
+      avatar: "https://i.ibb.co/tM2tXtVc/male-4.jpg",
     },
     {
       id: 10,
@@ -115,7 +115,7 @@ const Testimonial = () => {
       quote:
         "Someone returned my important reports that I had forgotten at a clinic. This platform really works!",
       date: "May 05, 2025",
-      avatar: "https://i.ibb.co/k0XgK2Y/user9.jpg",
+      avatar: "https://i.ibb.co/fYgqz3CX/female-1.jpg",
     },
   ];
 
