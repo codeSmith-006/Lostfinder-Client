@@ -23,7 +23,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  console.log("Scroll", scroll);
 
   const navigate = useNavigation();
   const location = useLocation();

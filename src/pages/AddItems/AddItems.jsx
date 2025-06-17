@@ -21,7 +21,6 @@ const AddItems = () => {
       ...objectData,
       date,
     };
-    console.log(data);
 
     try {
       const response = await axios.post("https://lostfinder-server.vercel.app/items", data);

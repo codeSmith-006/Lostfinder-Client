@@ -10,7 +10,6 @@ const LatestsortedData = () => {
   // loading
   const [loading, setLoading] = useState(true);
   const [sortedData, setSortedData] = useState([]);
-  console.log("Sorted data: ", sortedData[0]);
   // navigating
   const navigate = useNavigate();
 
@@ -21,7 +20,6 @@ const LatestsortedData = () => {
         const response = await axios.get("https://lostfinder-server.vercel.app/latestItems");
         setSortedData(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.log("Error while fetching data: ", error);
       }
@@ -30,7 +28,6 @@ const LatestsortedData = () => {
     fetchedData();
   }, []);
 
-  console.log(sortedData[0]?.thumbnail)
 
   if (loading) {
     return <Loading></Loading>;

@@ -25,7 +25,6 @@ const CardDetails = () => {
 
   useEffect(() => {
     if (loading || !currentUser || !id) return; // wait until auth is ready
-    console.log("Use effect is running");
     const fetchData = async (id) => {
       const response = await axiosSecure.get(`/items/${id}`);
       const data = await response.data;
@@ -38,7 +37,6 @@ const CardDetails = () => {
     }
   }, [id, loading, currentUser]);
 
-  console.log("Data details: ", data);
 
   // fetching allRecovered items data
   useEffect(() => {
@@ -55,14 +53,12 @@ const CardDetails = () => {
   }, []);
 
   // getting the data? data
-  console.log("details data id: ", id);
 
   // get the data that i want to check for isRecovered
   const specificData = recoveredItems.find(
     (singleData) => singleData?.recoveredId == data?._id
   );
 
-  console.log("Current date: ", data?.date);
   if (data.length == 0) return <Loading></Loading>;
 
   // navigate
@@ -88,8 +84,6 @@ const CardDetails = () => {
       userEmail: currentUser?.email,
     };
 
-    console.log(formData);
-
     // posting recovered items data from client side to server
     try {
       const response = await axios.post(
@@ -98,6 +92,7 @@ const CardDetails = () => {
       );
       if (response.data?.insertedId) {
         showToast("success", "Data posted successfully");
+        document.getElementById('recovery_modal').showModal();
         form.reset();
       }
     } catch (error) {

@@ -29,7 +29,6 @@ export default function Register() {
       displayName: name,
       photoURL: photoURL,
     };
-    console.log(updateProfile);
     const email = form.email.value;
     const password = form.password.value.trim();
 

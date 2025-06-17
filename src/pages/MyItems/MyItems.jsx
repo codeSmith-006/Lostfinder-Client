@@ -55,7 +55,6 @@ const MyItems = () => {
             const targetedId = {
       id,
     };
-    console.log("targeted id: ", targetedId);
     try {
       const response = await axios.delete("https://lostfinder-server.vercel.app/items", {
         data: targetedId,
@@ -93,7 +92,6 @@ const MyItems = () => {
         "https://lostfinder-server.vercel.app/items",
         updatedData
       );
-      console.log(response.data);
       if (response.data?.modifiedCount) {
         showToast("success", "Data updated successfully");
       }

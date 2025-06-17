@@ -28,7 +28,6 @@ const AllRecovered = () => {
     fetchAllRecovered();
   }, []);
 
-  console.log(usersPost);
 
   // handle grid icon click
   const handleGrid = () => {
@@ -47,11 +46,9 @@ const AllRecovered = () => {
     setLayout(localLayout);
   }, []);
 
-  console.log("Layout: ", layout);
 
   // handle delete
   const handleDelete = async (id) => {
-    console.log("Id to be deleted: ", id);
 
     // target id
     const targetedId = id;
