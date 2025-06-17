@@ -92,7 +92,7 @@ const CardDetails = () => {
       );
       if (response.data?.insertedId) {
         showToast("success", "Data posted successfully");
-        document.getElementById('recovery_modal').showModal();
+        document.getElementById('recovery_modal').close();
         form.reset();
       }
     } catch (error) {

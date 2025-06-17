@@ -16,6 +16,7 @@ const MyItems = () => {
 
   // const selected for update post
   const [updatedPost, setUpdatedPost] = useState(null);
+  console.log(updatedPost)
 
   // modal open behave
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -93,6 +94,7 @@ const MyItems = () => {
         updatedData
       );
       if (response.data?.modifiedCount) {
+        document.getElementById("update_modal").close();
         showToast("success", "Data updated successfully");
       }
     } catch (error) {
