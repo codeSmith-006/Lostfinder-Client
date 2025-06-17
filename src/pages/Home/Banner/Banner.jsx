@@ -4,6 +4,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import BouncingArrow from "../../../components/BouncingArrow/BouncingArrow";
 
 const slides = [
   {
@@ -91,5 +92,10 @@ const SlideHero = ({ slide }) => (
         </motion.button>
       </Link>
     </motion.div>
+
+    {/* bouncing arrow */}
+    <div className="z-40 absolute right-12 bottom-24 " >
+      <BouncingArrow></BouncingArrow>
+    </div>
   </div>
 );

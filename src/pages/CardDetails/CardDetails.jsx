@@ -198,7 +198,7 @@ const CardDetails = () => {
       <div className="pt-6">
         <button
           disabled={specificData?.isRecover}
-          onClick={() => setModalOpen(true)}
+          onClick={() => document.getElementById('recovery_modal').showModal()}
           className={`${
             specificData?.isRecover
               ? "bg-gray-600 cursor-not-allowed text-white"
@@ -213,102 +213,103 @@ const CardDetails = () => {
         </button>
       </div>
 
-      {/* Modal */}
-      {modalOpen && (
-        <dialog open className="modal modal-bottom pt-14 sm:modal-middle">
-          <div className="modal-box rounded-2xl space-y-4 p-6 bg-gray-900 text-gray-300">
-            <h3 className="text-xl font-semibold text-white mb-4">
-              Recovery Information
-            </h3>
+      <dialog id="recovery_modal" className="modal">
+        <div className="modal-box rounded-2xl space-y-4 p-6 bg-gray-900 text-gray-300 max-h-[90vh] overflow-y-auto">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
 
-            <form onSubmit={handleSubmit}>
-              {/* Recovered Location */}
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Recovery Information
+          </h3>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Recovered Location */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-white">
+                <span className="text-red-500">*</span> Recovered Location
+              </label>
+              <input
+                type="text"
+                required
+                name="Location"
+                className="input input-bordered w-full bg-gray-800 text-white border-gray-600"
+                placeholder="Where did you return or collect this item?"
+              />
+            </div>
+
+            {/* Recovery Date */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-white">
+                <span className="text-red-500">*</span> Recovery Date
+              </label>
+              <DatePicker
+                selected={recoveryDate}
+                onChange={(date) => setRecoveryDate(date)}
+                placeholderText="Select recovery date"
+                className="input input-bordered w-full bg-gray-800 text-white border-gray-600"
+                required
+              />
+            </div>
+
+            {/* User Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1 text-white">
-                  <span className="text-red-500">*</span> Recovered Location
+                  Your Name
                 </label>
                 <input
                   type="text"
-                  required
-                  name="Location"
-                  className="input input-bordered w-full bg-gray-800 text-white border-gray-600"
-                  placeholder="Where did you return or collect this item?"
+                  value={currentUser?.displayName}
+                  readOnly
+                  className="input input-bordered w-full bg-gray-700 text-gray-400 cursor-not-allowed"
                 />
               </div>
-
-              {/* Recovery Date */}
               <div>
                 <label className="block text-sm font-medium mb-1 text-white">
-                  <span className="text-red-500">*</span> Recovery Date
+                  Email
                 </label>
-                <DatePicker
-                  selected={recoveryDate}
-                  onChange={(date) => setRecoveryDate(date)}
-                  placeholderText="Select recovery date"
-                  className="input input-bordered w-full bg-gray-800 text-white border-gray-600"
-                  required
+                <input
+                  type="email"
+                  value={currentUser?.email}
+                  readOnly
+                  className="input input-bordered w-full bg-gray-700 text-gray-400 cursor-not-allowed"
                 />
               </div>
+            </div>
 
-              {/* User Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-white">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    value={currentUser?.displayName}
-                    readOnly
-                    className="input input-bordered w-full bg-gray-700 text-gray-400 cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-white">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={currentUser?.email}
-                    readOnly
-                    className="input input-bordered w-full bg-gray-700 text-gray-400 cursor-not-allowed"
-                  />
-                </div>
-              </div>
+            {/* User Photo */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-white">
+                Your Image
+              </label>
+              <img
+                src={currentUser?.photoURL}
+                alt="User"
+                className="h-16 w-16 rounded-full object-cover border border-gray-600"
+              />
+            </div>
 
-              {/* User Photo */}
-              <div>
-                <label className="block text-sm font-medium mb-1 text-white">
-                  Your Image
-                </label>
-                <img
-                  src={currentUser?.photoURL}
-                  alt="User"
-                  className="h-16 w-16 rounded-full object-cover border border-gray-600"
-                />
-              </div>
-
-              {/* Modal Actions */}
-              <div className="modal-action">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  type="button"
-                  className="btn btn-error"
-                >
+            {/* Modal Actions */}
+            <div className="modal-action">
+              <form method="dialog">
+                <button type="submit" className="btn btn-error">
                   Cancel
                 </button>
-                <button
-                  onClick={() => setIsRecoveredBool(true)}
-                  type="submit"
-                  className="btn bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-600 hover:to-blue-800 text-white"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </dialog>
-      )}
+              </form>
+              <button
+                onClick={() => setIsRecoveredBool(true)}
+                type="submit"
+                className="btn bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-600 hover:to-blue-800 text-white"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </dialog>
     </div>
   );
 };

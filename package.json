@@ -23,6 +23,7 @@
     "dayjs": "^1.11.13",
     "firebase": "^11.9.0",
     "localforage": "^1.10.0",
+    "lucide-react": "^0.515.0",
     "match-sorter": "^8.0.2",
     "motion": "^12.16.0",
     "react": "^19.1.0",

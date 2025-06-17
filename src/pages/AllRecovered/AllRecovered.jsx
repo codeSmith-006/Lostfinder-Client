@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Loading from "../../components/Loading/Loading";
 import axiosSecure from "../../components/hooks/axiosSecure";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { showToast } from "../../components/Toast/Toast";
 
 const AllRecovered = () => {
   // all recovered data
@@ -44,7 +47,48 @@ const AllRecovered = () => {
     setLayout(localLayout);
   }, []);
 
-  console.log("Layout: ", layout)
+  console.log("Layout: ", layout);
+
+  // handle delete
+  const handleDelete = async (id) => {
+    console.log("Id to be deleted: ", id);
+
+    // target id
+    const targetedId = id;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // delete from ui
+        const postAfterDelete = usersPost.filter(
+          (singleData) => singleData._id !== id
+        );
+        setUsersPost(postAfterDelete);
+		
+		// delete  from database
+        try {
+          const result = await axiosSecure.delete("/allRecovered", {
+            data: { targetedId },
+          });
+
+          if(result.data?.deletedCount) {
+			showToast('success', 'Items successfully deleted')
+		  }
+        } catch (error) {
+          console.log("Error while deleting the post: ", error);
+        }
+      }
+    });
+
+    // handling delete post in the database
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 backdrop-blur-md bg-transparent rounded-2xl shadow-lg text-gray-200 space-y-6">
@@ -65,9 +109,9 @@ const AllRecovered = () => {
         </button>
         <button
           onClick={handleTable}
-          className={ ` ${
+          className={`${
             layout === "table" ? "text-cyan-400" : ""
-          } text-gray-300  hover:text-cyan-400 transition text-xl`}
+          } text-gray-300 hover:text-cyan-400 transition text-xl`}
           title="Table View"
         >
           <i className="fas fa-table"></i>
@@ -92,6 +136,9 @@ const AllRecovered = () => {
                   </th>
                   <th className="py-3 px-4 text-left text-sm font-semibold">
                     Recovered On
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-semibold">
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -120,6 +167,15 @@ const AllRecovered = () => {
                         }
                       )}
                     </td>
+                    <td className="py-3 px-4 text-center text-red-400 text-xl">
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="hover:text-red-500 transition"
+                        title="Delete"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -141,24 +197,29 @@ const AllRecovered = () => {
           {usersPost.map((item, index) => (
             <div
               key={item.id || index}
-              className="bg-transparent border-gray-600 shadow-lg text-gray-100 rounded-xl p-4 space-y-2 hover:shadow-lg hover:bg-white/20 transition duration-300"
+              className="bg-transparent border-gray-600 shadow-lg text-gray-100 rounded-xl p-4 space-y-2 hover:shadow-lg hover:bg-white/20 transition duration-300 relative"
             >
+              {/* Delete Icon */}
+              <button
+                onClick={() => handleDelete(item._id)}
+                className="absolute top-2 right-2 text-red-400 hover:text-red-500 transition"
+                title="Delete"
+              >
+                <i className="fas fa-trash-alt"></i>
+              </button>
+
               <h3 className="text-lg font-semibold text-cyan-400">
                 <i className="fas fa-tag mr-2 text-cyan-300"></i>
                 {item.recoveredTitle}
               </h3>
               <p className="text-sm text-gray-300">
                 <i className="fas fa-layer-group mr-1 text-cyan-300"></i>
-                <span className="font-medium text-white">
-                  Category:
-                </span>{" "}
+                <span className="font-medium text-white">Category:</span>{" "}
                 {item.recoveredCategory}
               </p>
               <p className="text-sm text-gray-300">
                 <i className="fas fa-map-marker-alt mr-1 text-cyan-300"></i>
-                <span className="font-medium text-white">
-                  Location:
-                </span>{" "}
+                <span className="font-medium text-white">Location:</span>{" "}
                 {item.recoveredLocation}
               </p>
               <p className="text-sm text-gray-300">
