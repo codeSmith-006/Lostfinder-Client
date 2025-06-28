@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "motion/react";
 import GradientAnimate from "../../components/GradiantAnimation/GradientAnimation";
@@ -16,6 +16,11 @@ export default function Login() {
   // show password
   const [isVisible, setIsVisible] = useState(false);
 
+  // location
+  const location = useLocation();
+  // get the from pathname
+  const from = location.state?.from?.pathname || '/';
+
   // navigation
   const navigate = useNavigate();
 
@@ -31,7 +36,7 @@ export default function Login() {
     try {
       const userCredential = await accountLogin(email, password);
       if (userCredential?.user) {
-        navigate("/");
+        navigate(from)
         showToast("success", "Signed in successfully");
       }
     } catch (err) {
@@ -47,7 +52,7 @@ export default function Login() {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       if (userCredential?.user) {
-        navigate("/");
+        navigate(from);
         showToast("success", "Signed in successfully");
       }
     } catch (error) {

@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { showToast } from "../../components/Toast/Toast";
 import axiosSecure from "../../components/hooks/axiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../components/Loading/Loading";
 
 const MyItems = () => {
   // current user
@@ -21,6 +22,9 @@ const MyItems = () => {
   // modal open behave
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
+  // handling loading
+  const [loading, setLoading] = useState(true)
+
   // selected date
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -31,6 +35,7 @@ const MyItems = () => {
         const response = await axiosSecure("/myItems");
         const data = response.data;
         setSelectedPost(data);
+        setLoading(false)
       } catch (error) {
         console.log("Error when fetching allReovered: ", error);
       }
@@ -39,6 +44,11 @@ const MyItems = () => {
     // calling fetchAllRecovered();
     fetchAllRecovered();
   }, []);
+
+  // handling loading
+  if (loading) {
+    return <Loading></Loading>
+  }
 
   // handle delete button
   const handleDelete = async (id) => {

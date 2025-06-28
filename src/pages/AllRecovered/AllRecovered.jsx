@@ -10,6 +10,9 @@ const AllRecovered = () => {
   // all recovered data
   const [usersPost, setUsersPost] = useState([]);
 
+  // loading
+  const [loading, setLoading] = useState(true);
+
   // layout
   const [layout, setLayout] = useState("grid");
 
@@ -19,6 +22,7 @@ const AllRecovered = () => {
       try {
         const response = await axiosSecure.get("/allRecovered");
         setUsersPost(response.data);
+        setLoading(false);
       } catch (error) {
         console.log("Error when fetching allRecovered: ", error);
       }
@@ -28,6 +32,16 @@ const AllRecovered = () => {
     fetchAllRecovered();
   }, []);
 
+  // handling layout
+  useEffect(() => {
+    const localLayout = localStorage.getItem("layout");
+    setLayout(localLayout);
+  }, []);
+
+  // returning loading until data get loaded
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   // handle grid icon click
   const handleGrid = () => {
@@ -41,15 +55,8 @@ const AllRecovered = () => {
     localStorage.setItem("layout", "table");
   };
 
-  useEffect(() => {
-    const localLayout = localStorage.getItem("layout");
-    setLayout(localLayout);
-  }, []);
-
-
   // handle delete
   const handleDelete = async (id) => {
-
     // target id
     const targetedId = id;
 
@@ -68,23 +75,21 @@ const AllRecovered = () => {
           (singleData) => singleData._id !== id
         );
         setUsersPost(postAfterDelete);
-		
-		// delete  from database
+
+        // delete  from database
         try {
           const result = await axiosSecure.delete("/allRecovered", {
             data: { targetedId },
           });
 
-          if(result.data?.deletedCount) {
-			showToast('success', 'Items successfully deleted')
-		  }
+          if (result.data?.deletedCount) {
+            showToast("success", "Items successfully deleted");
+          }
         } catch (error) {
           console.log("Error while deleting the post: ", error);
         }
       }
     });
-
-    // handling delete post in the database
   };
 
   return (
