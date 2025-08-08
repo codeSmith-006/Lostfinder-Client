@@ -1,6 +1,6 @@
 # 📍 LostFinder - Lost & Found Items Platform
 
-![WhereIsIt Screenshot](./screenshot.png)
+![WhereIsIt Screenshot](LostFinder.png)
 
 ---
 
@@ -13,7 +13,7 @@
 ## 🌐 Live Demo
 
 Check out the live site here:  
-👉 [https://your-live-site-url.com](https://your-live-site-url.com)
+👉 [LostFinder Live](https://lostfinder-58605.web.app/)
 
 ---
 
@@ -77,7 +77,7 @@ Check out the live site here:
 
 ```bash
 # Frontend
-git clone https://github.com/yourusername/whereisit-client.git
+git clone https://github.com/codeSmith-006/Lostfinder-Client.git
 
 # Backend
-git clone https://github.com/yourusername/whereisit-server.git
+git clone https://github.com/codeSmith-006/Lostfinder-Server.git
