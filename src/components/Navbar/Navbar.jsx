@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <img src={logo} className="w-10 md:w-14" alt="" />
           <a href="/" className={` text-white font-bold text-xl md:text-3xl`}>
-            TestFinder
+            LostFinder
           </a>
         </div>
 
