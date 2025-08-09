@@ -120,7 +120,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="pb-5">
+    <div id="success-stories" className="pb-5">
       <h2 className="text-3xl px-3 font-bold text-teal-400 text-center mb-8 flex items-center justify-center gap-3">
         <i className="fas fa-star text-yellow-400"></i>
         Success Stories from Our Users

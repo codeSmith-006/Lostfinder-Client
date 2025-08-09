@@ -2,7 +2,10 @@ import React from "react";
 
 const FAQ = () => {
   return (
-    <section className="max-w-4xl mx-auto p-6 bg-transparent backdrop-blur-md  rounded-2xl shadow-lg text-white">
+    <section
+      id="faq"
+      className="max-w-4xl mx-auto p-6 bg-transparent backdrop-blur-md  rounded-2xl shadow-lg text-white"
+    >
       <h2 className="text-3xl font-bold text-teal-400 text-center mb-8 flex items-center justify-center gap-3">
         <i className="fas fa-info-circle text-yellow-400"></i>
         How It Works / FAQ

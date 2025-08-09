@@ -34,7 +34,7 @@ const LatestsortedData = () => {
   }
 
   return (
-    <div className="mt-12 pb-5 px-5">
+    <div id="latest-items" className="mt-12 pb-5 px-5">
       <h2 className="text-2xl font-bold text-teal-400 hover:text-gray-200 transition-colors duration-300 mb-8 text-center">
         <i className="fas fa-box-open text-teal-500 mr-2"></i>
         Latest Find & Lost Items

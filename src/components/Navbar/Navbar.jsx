@@ -1,6 +1,11 @@
 import React, { use, useEffect, useState } from "react";
 import logo from "../../assets/LostFinder logo.png";
-import { NavLink, useLocation, useNavigation } from "react-router-dom";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import * as motion from "motion/react-client";
 import AnimatedLink from "./AnimatedLinks/AnimatedLink";
 import { AuthContext } from "../../context/AuthContext";
@@ -9,6 +14,44 @@ import { Tooltip } from "@mui/material";
 
 const Navbar = () => {
   const { currentUser, loading, logout, photoURL } = use(AuthContext);
+  const navigate = useNavigation();
+  const navigating = useNavigate();
+  const location = useLocation();
+
+  // State to keep track of which section to scroll after redirect
+  const [scrollTarget, setScrollTarget] = React.useState(null);
+
+  const handleNavClick = (id) => {
+    if (location.pathname === "/" || location.pathname === "/home") {
+      // Already on home page — scroll immediately
+      scrollToSection(id);
+    } else {
+      // Not on home page — navigate there first
+      console.log("navigating");
+      navigating("/");
+      setScrollTarget(id);
+    }
+  };
+
+  // After navigation, scroll to the target section
+  useEffect(() => {
+    if (
+      (location.pathname === "/" || location.pathname === "/home") &&
+      scrollTarget
+    ) {
+      // small timeout to wait for DOM to render
+      setTimeout(() => {
+        scrollToSection(scrollTarget);
+        setScrollTarget(null);
+      }, 100);
+    }
+  }, [location.pathname, scrollTarget]);
+
+  // smooth scroll animation
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    section.scrollIntoView({ behavior: "smooth" });
+  };
 
   // scroll animation
   const [scroll, setScroll] = useState(false);
@@ -23,10 +66,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
-  const navigate = useNavigation();
-  const location = useLocation();
-
   // handle logout button
   const handleLogout = () => {
     logout()
@@ -39,14 +78,17 @@ const Navbar = () => {
   return (
     <div className="">
       <div
-        className={`navbar absolute bg-transparent shadow-[0_0_30px_rgba(0,0,0,0.1)]  flex justify-between  z-40 px-5 py-5 md:py-7 ${
+        className={`navbar absolute bg-transparent shadow-[0_0_30px_rgba(0,0,0,0.1)]  flex justify-between  z-40 px-3 md:px-10 py-2 md:py-4 ${
           scroll ? "fixed transition-all duration-300 backdrop-blur-md " : ""
         }`}
       >
         {/* logo section */}
-        <div className="flex items-center gap-4">
-          <img src={logo} className="w-10 md:w-14" alt="" />
-          <a href="/" className={` text-white font-bold text-xl md:text-3xl`}>
+        <div className="flex items-center gap-2">
+          <img src={logo} className="w-7 md:w-10" alt="" />
+          <a
+            href="/"
+            className={` text-white font-bold  text-lg md:text-xl lg:text-2xl `}
+          >
             LostFinder
           </a>
         </div>
@@ -54,26 +96,109 @@ const Navbar = () => {
         {/* user section */}
         <div className="flex items-center gap-5">
           {/* navigation section */}
-          <div className="hidden md:flex items-center gap-3 ">
-            <AnimatedLink to="/">Home</AnimatedLink>
+          <div className="hidden md:flex items-center gap-5">
+            <button onClick={() => scrollToSection("home")}>
+              <AnimatedLink to="/">Home</AnimatedLink>
+            </button>
+
+            {/* Latest items section */}
+
+            <motion.div
+              className="relative"
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+            >
+              <button
+                className="text-white hover:text-gray-300  cursor-pointer text-sm md:text-lg lg:text-xl  "
+                onClick={() => handleNavClick("latest-items")}
+              >
+                Latest Items
+              </button>
+              <motion.span
+                className="absolute left-0 bottom-0 h-[2px] bg-[#6ABCE7]"
+                variants={{
+                  rest: { width: 0 },
+                  hover: { width: "100%" },
+                }}
+                transition={{
+                  duration: 0.1,
+                  ease: "easeInOut",
+                }}
+              ></motion.span>
+            </motion.div>
+
+            {/* Success stories section */}
+
+            <motion.div
+              className="relative"
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+            >
+              <button
+                className="text-white hover:text-gray-300  cursor-pointer text-sm md:text-lg lg:text-xl  "
+                onClick={() => handleNavClick("success-stories")}
+              >
+                Success Stories
+              </button>
+              <motion.span
+                className="absolute left-0 bottom-0 h-[2px] bg-[#6ABCE7]"
+                variants={{
+                  rest: { width: 0 },
+                  hover: { width: "100%" },
+                }}
+                transition={{
+                  duration: 0.1,
+                  ease: "easeInOut",
+                }}
+              ></motion.span>
+            </motion.div>
+
+            {/* faq section */}
+
+            <motion.div
+              className="relative"
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+            >
+              <button
+                className="text-white hover:text-gray-300  cursor-pointer text-sm md:text-lg lg:text-xl  "
+                onClick={() => handleNavClick("faq")}
+              >
+                FAQ
+              </button>
+              <motion.span
+                className="absolute left-0 bottom-0 h-[2px] bg-[#6ABCE7]"
+                variants={{
+                  rest: { width: 0 },
+                  hover: { width: "100%" },
+                }}
+                transition={{
+                  duration: 0.1,
+                  ease: "easeInOut",
+                }}
+              ></motion.span>
+            </motion.div>
 
             {/* lost and find items */}
-            <AnimatedLink to="/allItems">Lost & Found Items</AnimatedLink>
+            <AnimatedLink to="/allItems">All Items</AnimatedLink>
           </div>
           {loading ? (
             <span className="loading loading-spinner text-info"></span>
           ) : currentUser ? (
             <div className="flex items-center gap-2">
-              <motion.button
+              {/* <motion.button
                 onClick={handleLogout}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ duration: 0 }}
-                className="px-6 hidden py-2 cursor-pointer rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 md:flex items-center gap-2"
+                className="md:px-5 cursor-pointer py-[6px] rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 hidden  md:flex lg:hidden items-center gap-2 text-sm md:text-lg lg:text-xl"
               >
                 <i className="fas fa-sign-out-alt"></i>
                 Logout
-              </motion.button>
+              </motion.button> */}
 
               <motion.div whileHover={{ scale: 1.01 }} className="flex">
                 <div className="dropdown dropdown-end">
@@ -154,7 +279,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0 }}
-                  className="px-6 cursor-pointer py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                  className="px-3 cursor-pointer py-1 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-md shadow-cyan-400/30 hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-sm"
                 >
                   <i className="fas fa-sign-in-alt"></i>
                   Login

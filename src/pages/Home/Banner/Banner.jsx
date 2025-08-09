@@ -33,7 +33,7 @@ const slides = [
 
 export default function Banner() {
   return (
-    <div className="w-full h-[100vh] relative">
+    <div id="home" className="w-full h-[100vh] relative">
       <Swiper
         modules={[Navigation, Autoplay]}
         loop
