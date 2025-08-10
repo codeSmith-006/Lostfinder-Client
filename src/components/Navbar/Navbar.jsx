@@ -18,6 +18,8 @@ import {
   MenuOutlined,
 } from "@ant-design/icons";
 
+import "./AnimatedLinks/active.css"
+
 // import "./antd-overrides.css";
 
 const { useBreakpoint } = Grid;
