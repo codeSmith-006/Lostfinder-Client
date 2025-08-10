@@ -312,7 +312,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
                     <MenuOutlined
                       style={{
                         fontSize: "28px",
-                        color: isDarkMode ? "#E0E0E0" : "black", // light icon in dark mode, dark icon in light mode
+                        color: isDarkMode ? "#E0E0E0" : "white", // light icon in dark mode, dark icon in light mode
                       }}
                     />
                   }

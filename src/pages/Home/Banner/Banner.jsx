@@ -1,9 +1,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Autoplay, Navigation, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { motion } from "motion/react";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import BouncingArrow from "../../../components/BouncingArrow/BouncingArrow";
 
 const slides = [
@@ -33,69 +36,232 @@ const slides = [
 
 export default function Banner() {
   return (
-    <div id="home" className="w-full h-[100vh] relative">
+    <div id="home" className="w-full h-[100vh] relative overflow-hidden">
       <Swiper
-        modules={[Navigation, Autoplay]}
+        modules={[Navigation, Autoplay, Pagination, EffectFade]}
         loop
-        autoplay={{ delay: 3000 }}
-        className="h-full"
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        speed={1000}
+        navigation={{
+          prevEl: ".swiper-button-prev-custom",
+          nextEl: ".swiper-button-next-custom",
+        }}
+        pagination={{
+          el: ".swiper-pagination-custom",
+          clickable: true,
+          bulletClass: "swiper-pagination-bullet-custom",
+          bulletActiveClass: "swiper-pagination-bullet-active-custom",
+        }}
+        className="h-full group"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <SlideHero slide={slide} />
+            <SlideHero slide={slide} index={index} />
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Custom Navigation */}
+      <div className="swiper-button-prev-custom absolute left-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100">
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </div>
+      <div className="swiper-button-next-custom absolute right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100">
+        <ChevronRight className="w-6 h-6 text-white" />
+      </div>
+
+      {/* Custom Pagination */}
+      <div className="swiper-pagination-custom absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex space-x-3"></div>
+
+      {/* Bouncing Arrow */}
+      <div className="z-40 absolute bottom-12 right-6 md:right-12 md:bottom-24">
+        <BouncingArrow />
+      </div>
     </div>
   );
 }
 
-const SlideHero = ({ slide }) => (
+const SlideHero = ({ slide, index }) => (
   <div
-    className="relative h-[100vh] w-full bg-cover bg-center"
+    className="relative h-[100vh] w-full bg-cover bg-center bg-no-repeat"
     style={{ backgroundImage: `url(${slide.image})` }}
   >
-    {/* Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-    <div className="absolute -z-0 inset-0 bg-gradient-to-b from-black/80 via-black/30 to-transparent"></div>
+    {/* Enhanced Overlay with Dark Top Shadow */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-black/70"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
 
-    {/* Content */}
-    <motion.div
-      className="absolute bottom-36 md:bottom-44 left-6 sm:left-16 max-w-xl p-8 md:bg-white/10 md:backdrop-blur-sm rounded-lg md:border md:border-white/30 text-white md:shadow-lg"
-      initial={{ y: 50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <h2
-        className="text-3xl sm:text-5xl font-bold leading-tight"
+    {/* Animated Content - Centered */}
+    <div className="absolute inset-0 flex items-center justify-center">
+      <motion.div
+        className="text-center max-w-4xl mx-auto px-6 sm:px-8"
+        initial={{ y: 80, opacity: 0, scale: 0.9 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        transition={{
+          duration: 1.2,
+          delay: 0.2,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
-        {slide.title}
-      </h2>
-      <p className="mt-3 text-base sm:text-lg drop-shadow-md">
-        {slide.subtitle}
-      </p>
-      <Link to={slide.buttonLink}>
-        <motion.button
-          whileHover={{
-            scale: 1.01,
-            boxShadow: "0 0 15px rgba(14, 165, 233, 0.8)",
-          }}
-          transition={{ duration: 0 }}
-          className="mt-6 cursor-pointer px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold rounded shadow-md hover:shadow-cyan-400/60 transition-all duration-500"
+        {/* Subtitle with modern styling */}
+        {/* <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="inline-block mb-4"
+        >
+          <span className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-medium text-white/90 border border-white/20">
+            {`0${index + 1}`} / {`0${slides.length}`}
+          </span>
+        </motion.div> */}
+
+        {/* Main Title */}
+        <motion.h1
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight text-white mb-6"
           style={{
-            backgroundSize: "200% 200%",
-            backgroundPosition: "0% 50%",
-            animation: "gradientShift 4s ease infinite",
+            textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+            background: "linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
           }}
         >
-          {slide.buttonText}
-        </motion.button>
-      </Link>
-    </motion.div>
+          {slide.title}
+        </motion.h1>
 
-    {/* bouncing arrow */}
-    <div className="z-40 absolute bottom-12 right-6 md:right-12 md:bottom-24 " >
-      <BouncingArrow></BouncingArrow>
+        {/* Subtitle */}
+        <motion.p
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed"
+          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
+        >
+          {slide.subtitle}
+        </motion.p>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          <Link to={slide.buttonLink}>
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 20px 40px rgba(14, 165, 233, 0.3)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-cyan-400/40 transition-all duration-500 overflow-hidden"
+              style={{
+                backgroundSize: "200% 200%",
+                backgroundPosition: "0% 50%",
+                animation: "gradientShift 6s ease infinite",
+              }}
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                {slide.buttonText}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </span>
+
+              {/* Button overlay effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </motion.button>
+          </Link>
+        </motion.div>
+
+        {/* Decorative elements */}
+        <motion.div
+          initial={{ scale: 0, rotate: 180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="absolute top-4 left-4 w-16 h-16 border border-white/20 rounded-full opacity-30"
+        ></motion.div>
+        <motion.div
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 1, delay: 1.4 }}
+          className="absolute bottom-4 right-4 w-12 h-12 border border-white/20 rounded-full opacity-20"
+        ></motion.div>
+      </motion.div>
+    </div>
+
+    {/* Animated background particles */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-white/10 rounded-full"
+          initial={{
+            x: Math.random() * window.innerWidth,
+            y: window.innerHeight + 50,
+          }}
+          animate={{
+            y: -50,
+            x: Math.random() * window.innerWidth,
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            ease: "linear",
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
     </div>
   </div>
 );
+
+// Add these styles to your global CSS
+const styles = `
+.swiper-pagination-bullet-custom {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet-custom::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: transparent;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active-custom {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.2);
+}
+
+.swiper-pagination-bullet-active-custom::before {
+  background: linear-gradient(45deg, #06b6d4, #3b82f6);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+`;
+
+// Inject styles
+if (typeof document !== "undefined") {
+  const styleElement = document.createElement("style");
+  styleElement.textContent = styles;
+  document.head.appendChild(styleElement);
+}

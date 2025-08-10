@@ -47,22 +47,33 @@ const LatestsortedData = () => {
             key={item._id}
             className="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-lg shadow-xl transition-all duration-300 hover:shadow-2xl hover:ring-2 hover:ring-teal-400/50"
           >
+            {/* Post Type Badge */}
+            {item.postType && (
+              <span className="absolute top-4 right-4 bg-teal-400 text-white text-xs font-semibold px-3 py-1 rounded-full shadow z-10">
+                {item.postType}
+              </span>
+            )}
+
             {/* Thumbnail */}
-            <img
-              src={item.thumbnail}
-              alt={item.title}
-              className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+            {item.thumbnail && (
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            )}
 
             {/* Content */}
             <div className="p-5 space-y-3">
-              <h3 className="text-xl font-semibold text-white">
-                <i className="fas fa-tag text-teal-300 mr-2"></i>
+              {/* Title */}
+              <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                <i className="fas fa-tag text-teal-300"></i>
                 {item.title}
               </h3>
 
-              <p className="text-sm text-gray-300">
-                <i className="fas fa-calendar-alt text-teal-200 mr-2"></i>
+              {/* Date */}
+              <p className="text-sm text-gray-300 flex items-center gap-2">
+                <i className="fas fa-calendar-alt text-teal-200"></i>
                 <span className="font-medium text-white">
                   {item.date
                     ? new Date(item.date).toLocaleDateString("en-US", {
@@ -74,17 +85,32 @@ const LatestsortedData = () => {
                 </span>
               </p>
 
-              <p className="text-sm text-gray-300">
-                <i className="fas fa-map-marker-alt text-teal-200 mr-2"></i>
-                <span className="font-medium text-white">{item.location}</span>
-              </p>
+              {/* Category */}
+              {item.category && (
+                <p className="text-sm text-gray-300 flex items-center gap-2">
+                  <i className="fas fa-layer-group text-teal-300"></i>
+                  <span className="font-medium text-white">Category:</span>{" "}
+                  {item.category}
+                </p>
+              )}
 
+              {/* Location */}
+              {item.location && (
+                <p className="text-sm text-gray-300 flex items-center gap-2">
+                  <i className="fas fa-map-marker-alt text-teal-200"></i>
+                  <span className="font-medium text-white">
+                    {item.location}
+                  </span>
+                </p>
+              )}
+
+              {/* View Details Button */}
               <div className="pt-2">
                 <button
                   onClick={() => navigate(`/allItems/${item?._id}`)}
-                  className="w-full cursor-pointer inline-block bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-600 hover:to-blue-800 transition-colors text-white font-medium py-2 rounded-xl text-sm shadow"
+                  className="w-full cursor-pointer inline-block bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-600 hover:to-blue-800 transition-colors text-white font-medium py-2 rounded-xl text-sm shadow flex items-center justify-center gap-2"
                 >
-                  <i className="fas fa-eye mr-1"></i> View Details
+                  <i className="fas fa-eye"></i> View Details
                 </button>
               </div>
             </div>
