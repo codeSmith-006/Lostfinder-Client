@@ -305,20 +305,6 @@ const Footer = ({ isDarkMode }) => {
               className="flex items-center gap-6 text-sm text-gray-400"
               variants={containerVariants}
             >
-              {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(
-                (item, index) => (
-                  <motion.a
-                    key={item}
-                    href="#"
-                    className="hover:text-teal-400 transition-colors duration-300 flex items-center gap-1"
-                    whileHover={{ y: -1 }}
-                    variants={itemVariants}
-                  >
-                    {item}
-                    <ExternalLink className="w-3 h-3 opacity-60" />
-                  </motion.a>
-                )
-              )}
             </motion.div>
           </div>
         </motion.div>

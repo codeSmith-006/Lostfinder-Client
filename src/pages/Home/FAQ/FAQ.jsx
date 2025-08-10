@@ -229,6 +229,13 @@ const FAQ = () => {
               to help you 24/7.
             </p>
             <motion.button
+              onClick={() => {
+                const email = "ryanrehan.pc@gmail.com";
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+                  email
+                )}`;
+                window.open(gmailUrl, "_blank");
+              }}
               className="px-8 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold rounded-full hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-teal-500/25"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
