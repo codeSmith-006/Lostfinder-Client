@@ -19,7 +19,7 @@ export default function Login() {
   // location
   const location = useLocation();
   // get the from pathname
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
 
   // navigation
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function Login() {
     try {
       const userCredential = await accountLogin(email, password);
       if (userCredential?.user) {
-        navigate(from)
+        navigate(from);
         showToast("success", "Signed in successfully");
       }
     } catch (err) {
@@ -121,6 +121,7 @@ export default function Login() {
                   <input
                     type="email"
                     id="email"
+                    defaultValue="testmail1@gmail.com"
                     name="email"
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg border-b border-[#2F8FFF]"
                     placeholder="Email"
@@ -136,13 +137,17 @@ export default function Login() {
                 <div className="relative rounded-lg border-b border-[#2F8FFF]">
                   <input
                     id="password"
+                    defaultValue="123@Rr"
                     name="password"
-                    type={`${!isVisible ? 'password' : 'text'}`}
+                    type={`${!isVisible ? "password" : "text"}`}
                     className="w-full bg-transparent py-3 px-4 text-white text-sm placeholder:text-[#8B8B8B] focus:outline-none rounded-lg"
                     placeholder="Password"
                   />
-                  <i onClick={() => setIsVisible(!isVisible)}
-                    className={`fas ${isVisible ? 'fa-eye' : 'fa-eye-slash'} absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer`}
+                  <i
+                    onClick={() => setIsVisible(!isVisible)}
+                    className={`fas ${
+                      isVisible ? "fa-eye" : "fa-eye-slash"
+                    } absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8B] cursor-pointer`}
                     role="button"
                     tabIndex={0}
                   ></i>

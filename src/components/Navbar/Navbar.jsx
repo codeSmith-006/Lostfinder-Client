@@ -262,6 +262,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
                 { id: "latest-items", label: "Latest Items" },
                 { id: "success-stories", label: "Success Stories" },
                 { id: "faq", label: "FAQ" },
+                { id: "blog", label: "Blog & Articles" },
               ].map((link) => (
                 <motion.div
                   key={link.id}

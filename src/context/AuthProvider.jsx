@@ -9,6 +9,7 @@ import {
 import { auth } from "../Auth/Firebase/Firebase.config";
 import { setAccessToken } from "../components/hooks/axiosSecure";
 
+
 const AuthProvider = ({ children }) => {
   const [photoURL, setPhotoURL] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);

@@ -25,16 +25,15 @@ const MainLayout = () => {
       <div className={`${conditionalPadding} relative`}>
         {!isDarkMode && (
           <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to right, #021C33, #013F58, #001D35)",
-              zIndex: -1,
-            }}
+            className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 z-[-1]`}
           />
         )}
 
-        {isDarkMode && <div className="absolute inset-0 bg-[#222831] z-[-1]" />}
+        {isDarkMode && (
+          <div
+            className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 z-[-1]`}
+          />
+        )}
 
         <Outlet />
       </div>

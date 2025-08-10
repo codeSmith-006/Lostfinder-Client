@@ -43,11 +43,11 @@ export default function Banner() {
         effect="fade"
         fadeEffect={{ crossFade: true }}
         autoplay={{
-          delay: 5000,
+          delay: 3000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        speed={1000}
+        speed={300}
         navigation={{
           prevEl: ".swiper-button-prev-custom",
           nextEl: ".swiper-button-next-custom",

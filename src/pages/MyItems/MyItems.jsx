@@ -1,58 +1,93 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import DatePicker from "react-datepicker";
-import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { showToast } from "../../components/Toast/Toast";
-import axiosSecure from "../../components/hooks/axiosSecure";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loading/Loading";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import axiosSecure from "../../components/hooks/axiosSecure";
+import { showToast } from "../../components/Toast/Toast";
 
 const MyItems = () => {
-  // current user
-  const { currentUser } = use(AuthContext);
+  const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
-  // getting all items data
-  const [SelectedPost, setSelectedPost] = useState([]);
-
-  // const selected for update post
+  // State for selected post to update
   const [updatedPost, setUpdatedPost] = useState(null);
-  console.log(updatedPost)
 
-  // modal open behave
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
-
-  // handling loading
-  const [loading, setLoading] = useState(true)
-
-  // selected date
+  // Selected date state for date picker
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // fetching allRecovered data
-  useEffect(() => {
-    const fetchAllRecovered = async () => {
-      try {
-        const response = await axiosSecure("/myItems");
-        const data = response.data;
-        setSelectedPost(data);
-        setLoading(false)
-      } catch (error) {
-        console.log("Error when fetching allReovered: ", error);
+  // Fetch items with React Query v5 style
+  const {
+    data: selectedPost = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["myItems"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/myItems");
+      return res.data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes caching (optional)
+  });
+
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axios.delete(
+        "https://lostfinder-server.vercel.app/items",
+        {
+          data: { id },
+        }
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      if (data?.deletedCount) {
+        showToast("success", "Item deleted successfully");
+        queryClient.invalidateQueries({ queryKey: ["myItems"] });
+      } else {
+        showToast("error", "Failed to delete item");
       }
-    };
+    },
+    onError: (error) => {
+      console.error("Delete error:", error);
+      showToast("error", "Failed to delete item");
+    },
+  });
 
-    // calling fetchAllRecovered();
-    fetchAllRecovered();
-  }, []);
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: async (updatedData) => {
+      const res = await axios.patch(
+        "https://lostfinder-server.vercel.app/items",
+        updatedData
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      if (data?.modifiedCount) {
+        showToast("success", "Data updated successfully");
+        queryClient.invalidateQueries({ queryKey: ["myItems"] });
+        document.getElementById("update_modal")?.close();
+        setUpdatedPost(null);
+      } else {
+        showToast("error", "Failed to update item");
+      }
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+      showToast("error", "Failed to update item");
+    },
+  });
 
-  // handling loading
-  if (loading) {
-    return <Loading></Loading>
-  }
-
-  // handle delete button
-  const handleDelete = async (id) => {
-    // handing delete with confirm
+  // Delete button handler with confirmation
+  const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -61,56 +96,37 @@ const MyItems = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then( async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-            const targetedId = {
-      id,
-    };
-    try {
-      const response = await axios.delete("https://lostfinder-server.vercel.app/items", {
-        data: targetedId,
-      });
-      if (response.data?.deletedCount) {
-        const dataAfterDelete = SelectedPost.filter(
-          (singleData) => singleData._id !== id
-        );
-        setSelectedPost(dataAfterDelete);
-        showToast('success', 'Item deleted successfully')
-      }
-    } catch (error) {
-      console.log("While deleted method from client side: ", error);
-    }
+        deleteMutation.mutate(id);
       }
     });
   };
 
-  // handling update data form
-  const handleUpdateForm = async (event) => {
+  // Update form submit handler
+  const handleUpdateForm = (event) => {
     event.preventDefault();
-
     const form = event.target;
     const formData = new FormData(form);
     const objectData = Object.fromEntries(formData.entries());
+
     const updatedData = {
       recoveredId: updatedPost?._id,
       ...objectData,
       date: selectedDate,
     };
 
-    // sending data to backend
-    try {
-      const response = await axios.patch(
-        "https://lostfinder-server.vercel.app/items",
-        updatedData
-      );
-      if (response.data?.modifiedCount) {
-        document.getElementById("update_modal").close();
-        showToast("success", "Data updated successfully");
-      }
-    } catch (error) {
-      console.log("Error while post form data to backend ", error);
-    }
+    updateMutation.mutate(updatedData);
   };
+
+  if (isLoading) return <Loading />;
+
+  if (isError)
+    return (
+      <div className="text-red-500 text-center p-4">
+        Error loading items: {error?.message || "Unknown error"}
+      </div>
+    );
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl text-white space-y-6">
@@ -118,7 +134,7 @@ const MyItems = () => {
         My Posted Items
       </h2>
 
-      {SelectedPost?.length > 0 ? (
+      {selectedPost.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white/5 backdrop-blur-md rounded-xl shadow-md">
             <thead className="bg-teal-800/20 text-teal-200">
@@ -141,9 +157,9 @@ const MyItems = () => {
               </tr>
             </thead>
             <tbody>
-              {SelectedPost.map((item) => (
+              {selectedPost.map((item) => (
                 <tr
-                  key={item.id}
+                  key={item._id}
                   className="hover:bg-white/10 transition border-t border-white/10"
                 >
                   <td className="py-3 px-4">
@@ -158,27 +174,30 @@ const MyItems = () => {
                   </td>
                   <td className="py-3 px-4 text-gray-200">{item.category}</td>
                   <td className="py-3 px-4 text-gray-200">{item.location}</td>
-                  <td className="py-3 px-4 text-center space-x-3">
-                    <NavLink>
+                  <td className="py-3 px-4 text-center space-x-4">
+                    <Tooltip title="Update">
                       <button
                         onClick={() => {
                           setUpdatedPost(item);
-                          setUpdateModalOpen(true);
-                          document.getElementById("update_modal").showModal();
+                          setSelectedDate(new Date(item.date) || new Date());
+                          document.getElementById("update_modal")?.showModal();
                         }}
-                        className="text-teal-300 hover:text-teal-400 transition"
-                        title="Update"
+                        className="text-teal-400 hover:text-teal-500 transition text-xl"
+                        aria-label="Update item"
                       >
-                        <i className="fas fa-edit text-lg"></i>
+                        <EditOutlined />
                       </button>
-                    </NavLink>
-                    <button
-                      onClick={() => handleDelete(item?._id)}
-                      className="text-red-400 hover:text-red-500 transition"
-                      title="Delete"
-                    >
-                      <i className="fas fa-trash-alt text-lg"></i>
-                    </button>
+                    </Tooltip>
+
+                    <Tooltip title="Delete">
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="text-red-500 hover:text-red-600 transition text-xl"
+                        aria-label="Delete item"
+                      >
+                        <DeleteOutlined />
+                      </button>
+                    </Tooltip>
                   </td>
                 </tr>
               ))}
@@ -195,10 +214,18 @@ const MyItems = () => {
 
       {/* Update Modal */}
       <dialog id="update_modal" className="modal">
-        <div className="modal-box bg-gray-900 backdrop-blur-md rounded-2xl text-white max-h-[90vh] overflow-y-auto">
+        <div className="modal-box bg-gray-900 backdrop-blur-md rounded-2xl text-white max-h-[90vh] overflow-y-auto relative">
           <form method="dialog">
             {/* Close Button */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button
+              type="button"
+              onClick={() => {
+                document.getElementById("update_modal")?.close();
+                setUpdatedPost(null);
+              }}
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              aria-label="Close modal"
+            >
               ✕
             </button>
           </form>
@@ -220,9 +247,15 @@ const MyItems = () => {
                 required
                 defaultValue={updatedPost?.postType}
               >
-                <option className="text-gray-600" value="">Select Type</option>
-                <option className="text-gray-600" value="lost">Lost</option>
-                <option className="text-gray-600" value="found">Found</option>
+                <option className="text-gray-600" value="">
+                  Select Type
+                </option>
+                <option className="text-gray-600" value="lost">
+                  Lost
+                </option>
+                <option className="text-gray-600" value="found">
+                  Found
+                </option>
               </select>
             </div>
 
@@ -281,11 +314,21 @@ const MyItems = () => {
                 defaultValue={updatedPost?.category || ""}
                 className="w-full bg-white/10 text-white border border-white/30 rounded-lg px-4 py-2 focus:outline-none"
               >
-                <option className="text-gray-600" value="">Select Category</option>
-                <option className="text-gray-600" value="pets">Pets</option>
-                <option className="text-gray-600" value="documents">Documents</option>
-                <option className="text-gray-600" value="gadgets">Gadgets</option>
-                <option className="text-gray-600" value="others">Others</option>
+                <option className="text-gray-600" value="">
+                  Select Category
+                </option>
+                <option className="text-gray-600" value="pets">
+                  Pets
+                </option>
+                <option className="text-gray-600" value="documents">
+                  Documents
+                </option>
+                <option className="text-gray-600" value="gadgets">
+                  Gadgets
+                </option>
+                <option className="text-gray-600" value="others">
+                  Others
+                </option>
               </select>
             </div>
 
@@ -338,7 +381,7 @@ const MyItems = () => {
                 </label>
                 <input
                   type="text"
-                  value={currentUser?.displayName}
+                  value={currentUser?.displayName || ""}
                   readOnly
                   className="input input-bordered w-full bg-white/10 text-gray-300 border-white/30"
                 />
@@ -349,7 +392,7 @@ const MyItems = () => {
                 </label>
                 <input
                   type="email"
-                  value={currentUser?.email}
+                  value={currentUser?.email || ""}
                   readOnly
                   className="input input-bordered w-full bg-white/10 text-gray-300 border-white/30"
                 />
@@ -357,13 +400,21 @@ const MyItems = () => {
             </div>
 
             {/* Modal Actions */}
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn btn-error">Cancel</button>
-              </form>
+            <div className="modal-action flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={() => {
+                  document.getElementById("update_modal")?.close();
+                  setUpdatedPost(null);
+                }}
+                className="btn btn-error"
+              >
+                Cancel
+              </button>
               <input
                 type="submit"
-                value="Save Changes"
+                value={updateMutation.isLoading ? "Saving..." : "Save Changes"}
+                disabled={updateMutation.isLoading}
                 className="btn bg-teal-500 hover:bg-teal-600 text-white"
               />
             </div>
