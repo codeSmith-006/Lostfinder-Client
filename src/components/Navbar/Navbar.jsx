@@ -18,6 +18,8 @@ import {
   MenuOutlined,
 } from "@ant-design/icons";
 
+// import "./antd-overrides.css";
+
 const { useBreakpoint } = Grid;
 
 const Navbar = ({ isDarkMode, setIsDarkMode }) => {
@@ -57,6 +59,10 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
       })
       .catch((error) => console.error(error));
   };
+
+  // const location = useLocation();
+
+  // Only render links if current path is "/"
 
   const menuItems = [
     {
@@ -250,23 +256,27 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
             />
           </NavLink>
 
-          {[
-            { id: "latest-items", label: "Latest Items" },
-            { id: "success-stories", label: "Success Stories" },
-            { id: "faq", label: "FAQ" },
-          ].map((link) => (
-            <motion.div
-              key={link.id}
-              className="relative cursor-pointer"
-              whileHover={{ scale: 1.05, color: "#6ABCE7" }}
-              onClick={() => {
-                const section = document.getElementById(link.id);
-                section?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              {link.label}
-            </motion.div>
-          ))}
+          {location.pathname === "/" && (
+            <>
+              {[
+                { id: "latest-items", label: "Latest Items" },
+                { id: "success-stories", label: "Success Stories" },
+                { id: "faq", label: "FAQ" },
+              ].map((link) => (
+                <motion.div
+                  key={link.id}
+                  className="relative cursor-pointer"
+                  whileHover={{ scale: 1.05, color: "#6ABCE7" }}
+                  onClick={() => {
+                    const section = document.getElementById(link.id);
+                    section?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  {link.label}
+                </motion.div>
+              ))}
+            </>
+          )}
 
           <NavLink
             to="/allItems"

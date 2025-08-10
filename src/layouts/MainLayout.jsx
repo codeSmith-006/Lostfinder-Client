@@ -1,37 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { use } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
-import Testimonial from "../pages/Testimonial/Testimonial";
+// import { useAuth } from "../contexts/AuthProvider"; // adjust path as needed
+import AuthProvider from "../context/AuthProvider";
+import { AuthContext } from "../context/AuthContext";
 
 const MainLayout = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Initialize from localStorage or default false
-    const saved = localStorage.getItem("darkMode");
-    return saved === "true" ? true : false;
-  });
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (isDarkMode) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    // Save preference
-    localStorage.setItem("darkMode", isDarkMode);
-  }, [isDarkMode]);
+  const { isDarkMode, setIsDarkMode } = use(AuthContext);
 
   const location = useLocation();
   const conditionalPadding =
     location.pathname !== "/" ? "py-5 pt-14 md:pt-32" : "";
+
   return (
     <div className="">
       <div>
-        <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}></Navbar>
+        <Navbar
+          isDarkMode={isDarkMode}
+          // darkToggle={toggleDark}
+          setIsDarkMode={setIsDarkMode}
+        />
       </div>
       <div className={`${conditionalPadding} relative`}>
-        {/* Light mode gradient background */}
         {!isDarkMode && (
           <div
             className="absolute inset-0"
@@ -43,14 +34,11 @@ const MainLayout = () => {
           />
         )}
 
-        {/* Dark mode solid background */}
-        {isDarkMode && (
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#121212] to-[#202020] z-[-1]" />
-        )}
+        {isDarkMode && <div className="absolute inset-0 bg-[#222831] z-[-1]" />}
 
         <Outlet />
       </div>
-      <Footer></Footer>
+      <Footer isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
     </div>
   );
 };

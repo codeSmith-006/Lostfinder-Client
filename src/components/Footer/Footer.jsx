@@ -1,10 +1,15 @@
-import { FaFacebookF, FaTwitter, FaInstagram, FaGithub } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa6";
 
-const Footer = () => {
+const Footer = ({ isDarkMode }) => {
   return (
-    <footer className="bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)] shadow-[0_-4px_12px_rgba(0,0,0,0.1)]  text-base-content py-10 px-6">
+    <footer
+      className={`shadow-[0_-4px_12px_rgba(0,0,0,0.1)] text-base-content py-10 px-6 ${
+        isDarkMode
+          ? "bg-[#222831]" // dark mode background color
+          : "bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)]" // light mode gradient
+      }`}
+    >
       <div className="max-w-7xl mx-auto text-white justify-center grid grid-cols-1 md:grid-cols-3 gap-10">
-        
         {/* Branding */}
         <div className="flex flex-col justify-center">
           <h2 className="text-2xl font-bold text-teal-400">LostFinder</h2>
@@ -17,10 +22,18 @@ const Footer = () => {
         <div className="flex flex-col justify-center items-start md:items-center">
           <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
           <ul className="space-y-1">
-            <li><a className="link link-hover">Home</a></li>
-            <li><a className="link link-hover">Report Lost</a></li>
-            <li><a className="link link-hover">Report Found</a></li>
-            <li><a className="link link-hover">Contact</a></li>
+            <li>
+              <a className="link link-hover">Home</a>
+            </li>
+            <li>
+              <a className="link link-hover">Report Lost</a>
+            </li>
+            <li>
+              <a className="link link-hover">Report Found</a>
+            </li>
+            <li>
+              <a className="link link-hover">Contact</a>
+            </li>
           </ul>
         </div>
 

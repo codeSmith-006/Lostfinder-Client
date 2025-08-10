@@ -14,6 +14,26 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Dark mode state with localStorage init
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true" ? true : false;
+  });
+
+  // Effect to apply dark mode class to <html> and save preference
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (isDarkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", isDarkMode);
+  }, [isDarkMode]);
+
+  // Optional: toggle function for convenience
+  const toggleDark = () => setIsDarkMode((prev) => !prev);
+
   // create account with email password
   const createAccount = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -36,9 +56,9 @@ const AuthProvider = ({ children }) => {
       if (user) {
         const token = await user.getIdToken();
         if (token) {
-          setAccessToken(token)
+          setAccessToken(token);
         } else {
-          setAccessToken(null)
+          setAccessToken(null);
         }
         setPhotoURL(user.photoURL);
         setCurrentUser(user);
@@ -46,7 +66,7 @@ const AuthProvider = ({ children }) => {
       } else {
         setCurrentUser(null);
       }
-      setLoading(false)
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -60,6 +80,8 @@ const AuthProvider = ({ children }) => {
     logout,
     photoURL,
     setPhotoURL,
+    isDarkMode,
+    setIsDarkMode,
   };
   return <AuthContext value={info}>{!loading && children}</AuthContext>;
 };

@@ -1,0 +1,32 @@
+/* antd-overrides.css */
+.dark-dropdown {
+  @apply bg-[#222831] rounded-lg shadow-lg;
+}
+
+.dark-dropdown .ant-dropdown-menu {
+  @apply bg-[#222831] rounded-lg;
+}
+
+.dark-dropdown .ant-dropdown-menu-item {
+  @apply text-gray-300;
+}
+
+.dark-dropdown .ant-dropdown-menu-item:hover {
+  @apply bg-gray-700;
+}
+
+.light-dropdown {
+  @apply bg-white rounded-lg shadow-lg;
+}
+
+.light-dropdown .ant-dropdown-menu {
+  @apply bg-white rounded-lg;
+}
+
+.light-dropdown .ant-dropdown-menu-item {
+  @apply text-gray-800;
+}
+
+.light-dropdown .ant-dropdown-menu-item:hover {
+  @apply bg-gray-200;
+}

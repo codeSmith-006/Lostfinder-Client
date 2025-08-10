@@ -1,9 +1,11 @@
-import React from "react";
+import React, { use } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import TestimonialCard from "./TestimonialCard";
+import { AuthContext } from "../../context/AuthContext";
 
 const Testimonial = () => {
+  const { isDarkMode } = use(AuthContext);
   // responsive breakpoint
   const responsive = {
     superLargeDesktop: {
@@ -120,8 +122,15 @@ const Testimonial = () => {
   ];
 
   return (
-    <div id="success-stories" className="pb-5">
-      <h2 className="text-3xl px-3 font-bold text-teal-400 text-center mb-8 flex items-center justify-center gap-3">
+    <div
+      id="success-stories"
+      className={`pb-5 pt-9 ${
+        isDarkMode
+          ? "bg-[#222831]"
+          : "bg-[linear-gradient(to_right,_#021C33,_#013F58,_#001D35)]"
+      }`}
+    >
+      <h2 className="text-3xl px-3 font-bold text-teal-400 text-center mb-8 flex items-center justify-center gap-3 ">
         <i className="fas fa-star text-yellow-400"></i>
         Success Stories from Our Users
         <i className="fas fa-heart text-pink-500"></i>
@@ -132,7 +141,7 @@ const Testimonial = () => {
         draggable={false}
         showDots={true}
         responsive={responsive}
-        ssr={true} // means to render carousel on server-side.
+        ssr={true}
         infinite={true}
         autoPlay={true}
         autoPlaySpeed={2000}
@@ -145,7 +154,10 @@ const Testimonial = () => {
         itemClass="carousel-item-padding-40-px"
       >
         {testimonialsData.map((testimonial) => (
-          <TestimonialCard testimonial={testimonial}></TestimonialCard>
+          <TestimonialCard
+            key={testimonial.id}
+            testimonial={testimonial}
+          ></TestimonialCard>
         ))}
       </Carousel>
     </div>
