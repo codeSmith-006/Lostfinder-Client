@@ -132,7 +132,7 @@ const FAQ = () => {
           </motion.div>
 
           <motion.h2
-            className="text-4xl md:text-5xl font-bold text-white mb-6 flex items-center justify-center gap-4"
+            className="text-lg md:2xl  text-center lg:text-3xl md:text-5xl font-bold text-white mb-6 flex items-center justify-center gap-4"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -184,7 +184,7 @@ const FAQ = () => {
 
         {/* FAQ Container */}
         <motion.div
-          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl"
+          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-2xl max-w-full sm:max-w-3xl mx-auto break-words"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}

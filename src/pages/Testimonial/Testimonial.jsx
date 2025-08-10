@@ -193,7 +193,7 @@ const Testimonial = () => {
         </motion.div>
 
         <motion.h2
-          className="text-4xl md:text-5xl font-bold text-white mb-6 flex items-center justify-center gap-4"
+          className="text-lg md:2xl  text-center lg:text-3xl md:text-5xl font-bold text-white mb-6 flex items-center justify-center gap-4"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}

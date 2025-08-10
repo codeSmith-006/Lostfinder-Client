@@ -82,7 +82,7 @@ const BlogSectionGrid = () => {
         </motion.div>
 
         <motion.h2
-          className="text-4xl md:text-5xl font-bold mb-6 flex items-center justify-center gap-4 bg-gradient-to-r from-white via-teal-200 to-cyan-300 bg-clip-text text-transparent"
+          className="text-lg md:2xl  text-center lg:text-3xl md:text-5xl font-bold mb-6 flex items-center justify-center gap-4 bg-gradient-to-r from-white via-teal-200 to-cyan-300 bg-clip-text text-transparent"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
